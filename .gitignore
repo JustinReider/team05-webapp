@@ -124,3 +124,7 @@ _modules/*
 
 /results/
 /phpunit*.xml
+
+# Github ssh keys
+githubKey
+githubKey.pub
