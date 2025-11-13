@@ -1,0 +1,27 @@
+.container {
+    max-width: 100% !important;
+    padding-left: 0%;
+    padding-right: 0%;
+}
+
+.navbar-toggler,
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+    font-size: 1em;
+}
+
+.bg-header {
+    background-color: #002060 !important;
+}
+
+.bg-footer {
+    background-color: #002060;
+}
+
+a:hover {
+    color: lightblue;
+}
