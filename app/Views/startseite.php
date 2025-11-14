@@ -32,7 +32,7 @@
 </nav>
 
 <!-- INHALT -->
-<div class="container mt-4">
+<div class="container mt-4 flex-fill">
     <div class="card">
         <div class="card-header">
             <h2 class="card-title">Tasks</h2>
