@@ -12,22 +12,19 @@
 <link rel="stylesheet" href="style.css">
 
 <nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container-fluid">
+    <div class="container-fluid d-flex flex-nowrap">
 
         <!-- Logo + Text -->
-        <a class="navbar-brand d-flex align-items-left ms-3" href="#">
+        <a class="navbar-brand ms-3" href="#">
             <img src="logo.svg" alt="Logo" class="navbar-logo">
         </a>
 
         <!-- Navigation -->
-        <div class="navbar-collapse show" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="#">Tasks</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Boards</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Spalten</a></li>
-            </ul>
-        </div>
-
+        <ul class="navbar-nav me-auto flex-row">
+            <li class="nav-item"><a class="nav-link" href="#">Tasks</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Boards</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Spalten</a></li>
+        </ul>
     </div>
 </nav>
 
@@ -44,7 +41,7 @@
 </div>
 
 <footer class="footer-custom">
-    <div class="container-fluid d-flex justify-content-between align-items-center">
+    <div class="container-fluid d-flex justify-content-between">
 
         <!-- Linker Text -->
         <span>©Web-Entwicklung 2023</span>

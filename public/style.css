@@ -17,6 +17,8 @@ body, html {
 /* Menü-Links */
 .navbar-custom .nav-link {
     color: #bfc9ff;
+    padding: 8px;
+    font-size: 16px;
 }
 
 .navbar-custom .nav-link:hover {
@@ -26,7 +28,9 @@ body, html {
 .footer-custom {
     background-color: #002060;
     color: white;
-    padding: 15px 0;
+    padding: 20px 0;
+    height: 85px;
+    align-content: end;
 }
 .footer-custom a {
     color: white;
