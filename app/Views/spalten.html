@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<script
+        src="https://unpkg.com/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+<body class="d-flex flex-column min-vh-100">
+<!-- NAVBAR -->
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="button.css">
+
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid d-flex flex-nowrap">
+
+        <!-- Logo + Text -->
+        <a class="navbar-brand ms-3" href="#">
+            <img src="logo.svg" alt="Logo" class="navbar-logo">
+        </a>
+    </div>
+
+<!-- Navigation -->
+<ul class="navbar-nav me-auto flex-row">
+    <li class="nav-item"><a class="nav-link" href="#">Tasks</a></li>
+    <li class="nav-item"><a class="nav-link" href="#">Boards</a></li>
+    <li class="nav-item"><a class="nav-link" href="spalten.html">Spalten</a></li>
+</ul>
+</nav>
+
+<!-- INHALT -->
+<div class="container mt-4 flex-fill">
+    <div class="card">
+        <div class="card-header">
+            <a href="spalten.html"> <h2 class="card-title">Spalten</h2></a>
+        </div>
+        <div class="card-body">
+            <p>
+               <a href="http://localhost"> <button type="button" class="button" onclick> Erstellen </button>
+               </a> </p>
+            <p>
+                <table>
+            <thead>
+            <tr>
+                <th>ID<br></th>
+                <th>Board<br></th>
+                <th>Sortid<br></th>
+                <th>Spalte<br></th>
+                <th>Spaltenbeschreibung<br></th>
+                <th>Bearbeiten<br></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>Allgemeine Tool</td>
+                <td>100</td>
+                <td>Zu besprechen</td>
+                <td>Noch zu besprechende Tools</td>
+                <td><i class="fa-solid fa-trash"></i>
+                    <i class="fa-solid fa-pen-to-square"></i></td>
+
+            </tr>
+
+            <tr>
+                <td>3</td>
+                <td>Allgemeine Tool</td>
+                <td>200</td>
+                <td>In Bearbeitung</td>
+                <td>Tools die aktuell bearbeitet werden</td>
+                <td><i class="fa-solid fa-trash"></i>
+                    <i class="fa-solid fa-pen-to-square"></i></td>
+
+            </tr>
+            </tbody>
+        </table>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+<footer class="footer-custom">
+    <div class="container-fluid d-flex justify-content-between">
+
+        <!-- Linker Text -->
+        <span>©Web-Entwicklung 2023</span>
+
+        <!-- Rechte Links -->
+        <div>
+            <a href="#">Impressum</a>
+            <a href="#">Datenschutz</a>
+            <a href="#">Kontakt</a>
+        </div>
+
+    </div>
+</footer>
+
+
+<!-- Bootstrap JS -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>

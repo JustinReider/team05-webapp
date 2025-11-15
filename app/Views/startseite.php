@@ -7,6 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
 
+<script
+        src="https://unpkg.com/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
 <body class="d-flex flex-column min-vh-100">
 <!-- NAVBAR -->
 <link rel="stylesheet" href="style.css">
@@ -23,7 +27,7 @@
         <ul class="navbar-nav me-auto flex-row">
             <li class="nav-item"><a class="nav-link" href="#">Tasks</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Boards</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Spalten</a></li>
+            <li class="nav-item"><a class="nav-link" href="spalten.html">Spalten</a></li>
         </ul>
     </div>
 </nav>
