@@ -1,5 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container-fluid d-flex flex-nowrap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<nav class="navbar navbar-expand-md navbar-custom">
+    <div class="container text-sm-start mw-100">
 
         <!-- Logo + Text -->
         <a class="navbar-brand ms-3" href="/">
@@ -7,10 +8,12 @@
         </a>
 
         <!-- Navigation -->
-        <ul class="navbar-nav me-auto flex-row">
-            <li class="nav-item"><a class="nav-link" href="#">Tasks</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Boards</a></li>
-            <li class="nav-item"><a class="nav-link" href="/spalten">Spalten</a></li>
-        </ul>
+        <div class="me-auto">
+            <ul class="navbar-nav me-auto flex-row">
+                <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-clipboard-check-fill icon-main-menu"></i><span class="me-2 me-lg-0 d-inline-flex d-sm-none d-lg-inline-flex">Tasks</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-kanban-fill icon-main-menu"></i><span class="me-2 me-lg-0 d-inline-flex d-sm-none d-lg-inline-flex">Boards</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/spalten"><i class="bi bi-layout-three-columns icon-main-menu"></i><span class="me-2 me-lg-0 d-inline-flex d-sm-none d-lg-inline-flex">Spalten</span></a></li>
+            </ul>
+        </div>
     </div>
 </nav>
