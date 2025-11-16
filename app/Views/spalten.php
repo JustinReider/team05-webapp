@@ -9,26 +9,15 @@
     <link rel="stylesheet" href="style.css">
 </head>
 
+<!-- Bootstrap JS -->
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
 
 <body class="d-flex flex-column min-vh-100">
 <!-- NAVBAR -->
-
-<nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container-fluid d-flex flex-nowrap">
-
-        <!-- Logo + Text -->
-        <a class="navbar-brand ms-3" href="#">
-            <img src="logo.svg" alt="Logo" class="navbar-logo">
-        </a>
-    </div>
-
-<!-- Navigation -->
-<ul class="navbar-nav me-auto flex-row">
-    <li class="nav-item"><a class="nav-link" href="#">Tasks</a></li>
-    <li class="nav-item"><a class="nav-link" href="#">Boards</a></li>
-    <li class="nav-item"><a class="nav-link" href="spalten.html">Spalten</a></li>
-</ul>
-</nav>
+<?= $this->include("templates/header.php"); ?>
 
 <!-- INHALT -->
 <div class="container mt-4 flex-fill">
@@ -93,29 +82,8 @@
     </div>
 </div>
 
-
-
-<footer class="footer-custom">
-    <div class="container-fluid d-flex justify-content-between">
-
-        <!-- Linker Text -->
-        <span>©Web-Entwicklung 2023</span>
-
-        <!-- Rechte Links -->
-        <div>
-            <a href="#">Impressum</a>
-            <a href="#">Datenschutz</a>
-            <a href="#">Kontakt</a>
-        </div>
-
-    </div>
-</footer>
-
-
-<!-- Bootstrap JS -->
-<script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-</script>
+<!-- FOOTER -->
+<?= $this->include("templates/footer.php"); ?>
 
 </body>
 </html>
