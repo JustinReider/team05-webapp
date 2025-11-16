@@ -10,9 +10,9 @@
         <!-- Navigation -->
         <div class="me-auto">
             <ul class="navbar-nav me-auto flex-row">
-                <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-clipboard-check-fill icon-main-menu"></i><span class="me-2 me-lg-0 d-inline-flex d-sm-none d-lg-inline-flex">Tasks</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-kanban-fill icon-main-menu"></i><span class="me-2 me-lg-0 d-inline-flex d-sm-none d-lg-inline-flex">Boards</span></a></li>
-                <li class="nav-item"><a class="nav-link" href="/spalten"><i class="bi bi-layout-three-columns icon-main-menu"></i><span class="me-2 me-lg-0 d-inline-flex d-sm-none d-lg-inline-flex">Spalten</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/"><i class="bi bi-clipboard-check-fill icon-main-menu"></i><span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">Tasks</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="#"><i class="bi bi-kanban-fill icon-main-menu"></i><span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">Boards</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/spalten"><i class="bi bi-layout-three-columns icon-main-menu"></i><span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">Spalten</span></a></li>
             </ul>
         </div>
     </div>
