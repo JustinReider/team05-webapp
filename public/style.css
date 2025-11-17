@@ -49,10 +49,6 @@ body, html {
     text-decoration: underline;
 }
 
-.card-body{
-    color: white;
-}
-
 .bootstrap-table.bootstrap5 .float-left{
     float: left;
 }

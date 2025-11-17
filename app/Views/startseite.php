@@ -14,7 +14,7 @@
 
 <body class="d-flex flex-column min-vh-100">
 <!-- NAVBAR -->
-<?= $this->include("templates/header.php"); ?>
+<?= $this->include("templates/navbar.php"); ?>
 
 <!-- INHALT -->
 <div class="container mt-4 flex-fill">
