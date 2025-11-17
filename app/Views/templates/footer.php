@@ -2,7 +2,7 @@
     <div class="container-fluid d-flex justify-content-between">
 
         <!-- Linker Text -->
-        <span>©Web-Entwicklung 2023</span>
+        <span>©Web-Entwicklung Team 05</span>
 
         <!-- Rechte Links -->
         <div>

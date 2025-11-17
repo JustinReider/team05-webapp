@@ -18,12 +18,14 @@ body, html {
 .navbar-custom .nav-link {
     color: #bfc9ff;
     font-size: 18px;
+    border-radius: 12px;
     transition: all 0.2s ease-in-out;
 }
 
 .navbar-custom .nav-link:hover {
     color: white !important;
-    font-weight: bold;
+    background-color: #61616380;
+    transform: translateY(-1px);
 }
 
 .icon-main-menu {
