@@ -4,7 +4,7 @@
     <div class="container text-sm-start mw-100">
 
         <!-- Logo + Text -->
-        <a class="navbar-brand ms-auto ms-sm-3 me-auto me-sm-0 " href="/">
+        <a class="navbar-brand ms-auto ms-sm-3 me-auto me-sm-3 " href="/">
             <img src="/logo.svg" alt="Logo" class="navbar-logo">
         </a>
         <!-- Navigation -->
@@ -14,7 +14,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/">
                         <i class="bi bi-clipboard-check-fill icon-main-menu"></i>
-                        <span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">
+                        <span class="d-inline-flex d-sm-none d-md-inline-flex">
                             Tasks
                         </span>
                     </a>
@@ -40,6 +40,9 @@
 
             </ul>
         </div>
-
+        <label class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="themeToggle">
+            <span class="text-light">Dark Mode</span>
+        </label>
     </div>
 </nav>
