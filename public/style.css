@@ -11,7 +11,7 @@ body, html {
 /* Logo-Bild links */
 .navbar-logo {
     width: auto;
-    height: 85px;
+    height: 70px;
 }
 
 /* Menü-Links */
@@ -20,24 +20,26 @@ body, html {
     font-size: 18px;
     border-radius: 12px;
     transition: all 0.2s ease-in-out;
+    margin-right: 3px;
+    margin-left: 3px;
 }
 
 .navbar-custom .nav-link:hover {
     color: white !important;
     background-color: #61616380;
-    transform: translateY(-1px);
+    transform: translateY(-3px);
 }
 
 .icon-main-menu {
     color: #ffffff !important;
-    margin-right: .25em;
+    margin-right: .1em;
 }
 
 .footer-custom {
     background-color: #002060;
     color: white;
     padding: 20px 0;
-    height: 85px;
+    height: 70px;
     align-content: end;
 }
 .footer-custom a {
