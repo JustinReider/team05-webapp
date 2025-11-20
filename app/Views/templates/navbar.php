@@ -11,7 +11,7 @@
         <div class=" ms-auto ms-sm-0 me-auto ">
             <ul class="navbar-nav flex-row">
 
-                <li class="nav-item">
+                <li class="nav-item mx-1">
                     <a class="nav-link" href="/">
                         <i class="bi bi-clipboard-check-fill icon-main-menu"></i>
                         <span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">
@@ -20,7 +20,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item mx-1">
                     <a class="nav-link" href="#">
                         <i class="bi bi-kanban-fill icon-main-menu"></i>
                         <span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">
@@ -29,7 +29,7 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item mx-1">
                     <a class="nav-link" href="/spalten">
                         <i class="bi bi-layout-three-columns icon-main-menu"></i>
                         <span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">
