@@ -12,4 +12,11 @@ class Tasks extends BaseController
 		$tasks['tasks'] = $model->getTasks();
 		return view('pages/tasks', $tasks);
 	}
+	public function getNew()
+	{
+    $model = new TasksModel();
+	$data['title'] = 'Neue Task erstellen';
+	$data['task'] = null;
+	return view(pages/tasks_form', $data);
+	}
 }
