@@ -26,70 +26,46 @@
 				</button>
 			</a>
 		</p>
-		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-			<?php if (!empty($tasks)): ?>
-				<?php foreach ($tasks as $task): ?>
-					<div class="col">
-						<div class="card shadow-sm h-100 border-0 bg-body-tertiary">
-							<div class="card-body">
-								<div class="d-flex align-items-center mb-2">
-									<span class="badge text-bg-primary me-2">#<?= esc($task['id']) ?></span>
-									<h5 class="card-title mb-0 flex-grow-1">Task: <?= esc($task['tasks']) ?></h5>
+
+		<?php if (!empty($tasks)): ?>
+			<div class="overflow-auto">
+				<div class="d-flex flex-nowrap gap-3 mt-3">
+					<?php foreach ($tasks as $spaltenId => $spalteTasks): ?>
+						<div class="flex-grow-1" style="min-width: 200px; max-width: 300px;">
+							<h5 class="text-center mb-3">Spalte <?= esc($spaltenId) ?></h5>
+							<?php foreach ($spalteTasks as $task): ?>
+								<div class="card shadow-sm mb-3 border-0 bg-body-tertiary">
+									<div class="card-body">
+										<div class="d-flex align-items-center mb-2">
+											<span class="badge text-bg-primary me-2">#<?= esc($task['id']) ?></span>
+											<h6 class="card-title mb-0 flex-grow-1"><?= esc($task['tasks']) ?></h6>
+										</div>
+										<ul class="list-group list-group-flush mb-2">
+											<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenid']) ?></li>
+											<li class="list-group-item bg-transparent"><strong>Sortierung:</strong> <?= esc($task['sortid']) ?></li>
+											<li class="list-group-item bg-transparent"><strong>Erstellt:</strong> <?= esc($task['erstelldatum']) ?></li>
+											<li class="list-group-item bg-transparent"><strong>Erinnerung:</strong> <?= esc($task['erinnerungsdatum']) ?></li>
+											<li class="list-group-item bg-transparent"><strong>Notizen:</strong> <?= esc($task['notizen']) ?></li>
+										</ul>
+										<div class="d-flex justify-content-between align-items-center">
+											<span class="badge text-bg-<?= esc($task['erledigt']) ? 'success' : 'secondary' ?>">
+												<?= esc($task['erledigt']) ? 'Erledigt' : 'Offen' ?>
+											</span>
+											<span class="badge text-bg-<?= esc($task['geloescht']) ? 'danger' : 'info' ?>">
+												<?= esc($task['geloescht']) ? 'Gelöscht' : 'Aktiv' ?>
+											</span>
+										</div>
+									</div>
 								</div>
-								<ul class="list-group list-group-flush mb-3">
-									<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenid']) ?></li>
-									<li class="list-group-item bg-transparent"><strong>Spalte:</strong> <?= esc($task['spaltenid']) ?></li>
-									<li class="list-group-item bg-transparent"><strong>Sortierung:</strong> <?= esc($task['sortid']) ?></li>
-									<li class="list-group-item bg-transparent"><strong>Erstellt:</strong> <?= esc($task['erstelldatum']) ?></li>
-									<li class="list-group-item bg-transparent"><strong>Erinnerung:</strong> <?= esc($task['erinnerungsdatum']) ?></li>
-									<li class="list-group-item bg-transparent"><strong>Erinnerung aktiv:</strong> <?= esc($task['erinnerung']) ?></li>
-									<li class="list-group-item bg-transparent"><strong>Notizen:</strong> <?= esc($task['notizen']) ?></li>
-								</ul>
-								<div class="d-flex justify-content-between align-items-center">
-									<span class="badge text-bg-<?= esc($task['erledigt']) ? 'success' : 'secondary' ?>">
-										<?= esc($task['erledigt']) ? 'Erledigt' : 'Offen' ?>
-									</span>
-									<span class="badge text-bg-<?= esc($task['geloescht']) ? 'danger' : 'info' ?>">
-										<?= esc($task['geloescht']) ? 'Gelöscht' : 'Aktiv' ?>
-									</span>
-								</div>
-							</div>
+							<?php endforeach; ?>
 						</div>
-					</div>
-				<?php endforeach; ?>
-			<?php else: ?>
-				<div class="col">
-					<div class="alert alert-info text-center">No tasks found</div>
+					<?php endforeach; ?>
 				</div>
+			<?php else: ?>
+				<div class="alert alert-info text-center">No tasks found</div>
 			<?php endif; ?>
-		</div>
-		<style>
-			.card {
-				transition: transform 0.15s cubic-bezier(.4, 2, .6, 1), box-shadow 0.15s;
-			}
-
-			.card:hover {
-				transform: translateY(-4px) scale(1.02);
-				box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-			}
-
-			.card .badge {
-				font-size: 0.95em;
-				letter-spacing: 0.03em;
-			}
-
-			.card-title {
-				font-weight: 600;
-			}
-
-			.list-group-item {
-				border: none;
-				padding-left: 0;
-				padding-right: 0;
-			}
-		</style>
+			</div>
 	</div>
-
 	<!-- FOOTER -->
 	<?= $this->include("templates/footer.php"); ?>
 
