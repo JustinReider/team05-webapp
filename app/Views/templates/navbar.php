@@ -87,6 +87,14 @@
 							</span>
 						</a>
 					</li>
+					<li class="nav-item mx-1">
+						<a class="nav-link" href="<?= base_url('personen') ?>" title="Personen">
+							<i class="bi bi-layout-three-columns icon-main-menu"></i>
+							<span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">
+								Personen
+							</span>
+						</a>
+					</li>
 				</ul>
 			</div>
 

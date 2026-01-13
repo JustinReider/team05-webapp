@@ -3,26 +3,11 @@
 use CodeIgniter\Model;
 
 class TasksModel extends Model {
-	protected $table = 'personen';
+	protected $table = 'tasks';
 	protected $primaryKey = 'id';
 	protected $returnType = 'array';
 	protected $allowedFields = [];
 	
-	/**
-	 * Get all persons from the database
-	 *
-	 * @return array Array of person records or empty array if none found
-	 */
-	public function getData(): array
-	{
-		try {
-			return $this->findAll() ?? [];
-		} catch (\Exception $e) {
-			log_message('error', 'Error fetching persons: ' . $e->getMessage());
-			return [];
-		}
-	}
-
 	public function queryBuilder($sql, $binds = []){
 		$query = $this->db->query($sql, $binds);
 		return $query->getResultArray();
