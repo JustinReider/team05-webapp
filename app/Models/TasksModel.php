@@ -27,9 +27,8 @@ class TasksModel extends Model
 		return $query->getResultArray();
 	}
 
-	public function getTasks($board = ""): array
+public function getTasks($board = "", $id = null): array
 	{
-		$id = $this->primaryKey;
 		if ($id == null) {
 			if (!empty($board)) {
 				$sql = "SELECT * FROM tasks WHERE boardid = ? ORDER BY tasks ASC";
