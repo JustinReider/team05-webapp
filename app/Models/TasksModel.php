@@ -9,7 +9,17 @@ class TasksModel extends Model
 	protected $table = 'tasks';
 	protected $primaryKey = 'id';
 	protected $returnType = 'array';
-	protected $allowedFields = [];
+	protected $allowedFields = [
+		'tasks',
+		'taskartenid',
+		'personenid',
+		'spaltenid',
+		'erinnerungsdatum',
+		'erinnerung',
+		'notiz',
+		'erledigt',
+		'geloescht'
+	];
 
 	public function queryBuilder($sql, $binds = [])
 	{
@@ -19,12 +29,15 @@ class TasksModel extends Model
 
 	public function getTasks($board = ""): array
 	{
-		if (!empty($board)) {
-			$sql = "SELECT * FROM tasks WHERE boardid = ? ORDER BY tasks ASC";
-			return $this->queryBuilder($sql, [$board]);
-		} else {
-			$sql = "SELECT * FROM tasks ORDER BY tasks ASC";
-			return $this->queryBuilder($sql);
-		}
+		$id = $this->primaryKey;
+		if ($id == null) {
+			if (!empty($board)) {
+				$sql = "SELECT * FROM tasks WHERE boardid = ? ORDER BY tasks ASC";
+				return $this->queryBuilder($sql, [$board]);
+			} else {
+				$sql = "SELECT * FROM tasks ORDER BY tasks ASC";
+				return $this->queryBuilder($sql);
+			}
+		} else return $this->find($id);
 	}
 }
