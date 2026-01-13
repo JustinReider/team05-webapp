@@ -27,7 +27,7 @@ class Tasks extends BaseController
 		$model = new TasksModel();
 		$data['title'] = 'Neue Task erstellen';
 		$data['task'] = null;
-		return view('pages/tasks_form', $data);
+		return view('tasks/new', $data);
 	}
 
 	public function postSave()
