@@ -24,8 +24,10 @@ class TasksModel extends Model {
 	}
 
 	public function getTasks() : array {
+		if($id==null){
 		$sql = "SELECT * FROM tasks ORDER BY tasks.tasks ASC";
 		return $this->queryBuilder($sql);
+	} else return $this->find($id);
 	}
 }
 
