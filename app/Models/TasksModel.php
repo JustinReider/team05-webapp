@@ -22,5 +22,15 @@ class TasksModel extends Model {
 			return [];
 		}
 	}
+
+	public function queryBuilder($sql, $binds = []){
+		$query = $this->db->query($sql, $binds);
+		return $query->getResultArray();
+	}
+
+	public function getTasks() : array {
+		$sql = "SELECT * FROM tasks ORDER BY tasks.tasks ASC";
+		return $this->queryBuilder($sql);
+	}
 }
 

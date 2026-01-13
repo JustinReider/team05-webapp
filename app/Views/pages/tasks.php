@@ -24,21 +24,34 @@
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Vorname</th>
-						<th>Name</th>
-						<th>Email</th>
-						<th>Passwort</th>
+						<th>taskartenid</th>
+						<th>spaltenid</th>
+						<th>sortid</th>
+						<th>tasks</th>
+						<th>erstelldatum</th>
+						<th>erinnerungsdatum</th>
+						<th>erinnerungsdatum</th>
+						<th>erinnerung</th>
+						<th>notizen</th>
+						<th>erledigt</th>
+						<th>gelöscht</th>
 					</tr>
 				</thead>
 				<tbody>
-					<?php if (!empty($personen)): ?>
-						<?php foreach ($personen as $person): ?>
+					<?php if (!empty($tasks)): ?>
+						<?php foreach ($tasks as $task): ?>
 							<tr>
-								<td><?= esc($person['id']) ?></td>
-								<td><?= esc($person['vorname']) ?></td>
-								<td><?= esc($person['name']) ?></td>
-								<td><?= esc($person['email']) ?></td>
-								<td>********</td>
+								<td><?= esc($task['id']) ?></td>
+								<td><?= esc($task['taskartenid']) ?></td>
+								<td><?= esc($task['spaltenid']) ?></td>
+								<td><?= esc($task['sortid']) ?></td>
+								<td><?= esc($task['tasks']) ?></td>
+								<td><?= esc($task['erstelldatum']) ?></td>
+								<td><?= esc($task['erinnerungsdatum']) ?></td>
+								<td><?= esc($task['erinnerung']) ?></td>
+								<td><?= esc($task['notizen']) ?></td>
+								<td><?= esc($task['erledigt']) ?></td>
+								<td><?= esc($task['geloescht']) ?></td>
 							</tr>
 						<?php endforeach; ?>
 					<?php else: ?>
