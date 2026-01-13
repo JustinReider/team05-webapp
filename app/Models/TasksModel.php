@@ -6,7 +6,17 @@ class TasksModel extends Model {
 	protected $table = 'tasks';
 	protected $primaryKey = 'id';
 	protected $returnType = 'array';
-	protected $allowedFields = [];
+	protected $allowedFields = [
+        'tasks', 
+        'taskartenid', 
+        'personenid', 
+        'spaltenid', 
+        'erinnerungsdatum', 
+        'erinnerung', 
+        'notiz', 
+        'erledigt', 
+        'geloescht'
+    ];
 	
 	public function queryBuilder($sql, $binds = []){
 		$query = $this->db->query($sql, $binds);
