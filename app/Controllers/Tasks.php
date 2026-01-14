@@ -3,18 +3,26 @@
 namespace App\Controllers;
 
 use App\Models\TasksModel;
+use App\Models\BoardsModel;
 
 class Tasks extends BaseController
 {
 	public function getIndex()
 	{
+		$tm = new TasksModel();
+		$bm = new BoardsModel();
+
 		$board = $this->request->getGet('board');
 		if (!ctype_digit($board)) {
 			$board = 1;
 		}
-		$model = new TasksModel();
-		$tasks = $model->getTasks($board);
-		return view('pages/tasks', ['tasks' => $tasks]);
+
+		$data['tasks'] = $tm->getColumnsTasks($board);
+
+		$data['boardName'] = $bm->getBoardName($board)['board'];
+		$data['boards'] = $bm->getBoards();
+		
+		return view('pages/tasks', $data);
 	}
 
 	public function getNew()

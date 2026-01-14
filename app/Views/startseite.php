@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Tasks</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-<link rel="stylesheet" href="<?= base_url('style.css') ?>">
+	<link rel="stylesheet" href="<?= base_url('style.css') ?>">
 </head>
 
 <script
@@ -21,11 +21,8 @@
 	<div class="container mt-4 flex-fill">
 		<h1 class="text-center"><i class="bi bi-arrow-up fs-1"></i></h1>
 		<div class="card">
-			<div class= "card-header">
-				<h2 class="card-title">Tasks</h2>
-			</div>
-			<div class="card-body">
-				<p>Für Übung 4 bitte auf den "Tasks" Button in der Navigationsleiste klicken</p>
+			<div class="card-header">
+				<h2 class="card-title">Willkommen bei Gruppe 05</h2>
 			</div>
 		</div>
 	</div>
