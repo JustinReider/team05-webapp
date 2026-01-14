@@ -8,18 +8,13 @@ class Tasks extends BaseController
 {
 	public function getIndex()
 	{
-		$model = new TasksModel();
-		$allTasks = $model->getTasks();
-
-		foreach ($allTasks as $task) {
-			$spalteId = $task['spaltenid'];
-			if (!isset($tasksBySpalte[$spalteId])) {
-				$tasksBySpalte[$spalteId] = [];
-			}
-			$tasksBySpalte[$spalteId][] = $task;
+		$board = $this->request->getGet('board');
+		if (!ctype_digit($board)) {
+			$board = 1;
 		}
-
-		return view('pages/tasks', ['tasks' => $tasksBySpalte]);
+		$model = new TasksModel();
+		$tasks = $model->getTasks($board);
+		return view('pages/tasks', ['tasks' => $tasks]);
 	}
 
 	public function getNew()

@@ -17,15 +17,25 @@
 	<!-- NAVBAR -->
 	<?= $this->include("templates/navbar.php"); ?>
 
-	<!-- INHALT -->
-	<div class="container mt-4 flex-fill">
-		<p>
-			<a href="tasks/new">
-				<button type="button" class="btn btn-primary">
-					<i class="fas"></i>Erstellen
-				</button>
-			</a>
-		</p>
+<!-- INHALT -->
+<!-- INHALT -->
+<div class="container mt-4 flex-fill">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <a href="tasks/new">
+      <button type="button" class="btn btn-primary">
+        <i class="fas"></i>Erstellen
+      </button>
+    </a>
+    <div class="dropdown">
+<button class="btn btn-primary dropdown-toggle" type="button" id="boardDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        Board
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="boardDropdown">
+        <li><a class="dropdown-item" href="?board=1">Board 1</a></li>
+        <li><a class="dropdown-item" href="?board=2">Board 2</a></li>
+      </ul>
+    </div>
+  </div>
 
 		<?php if (!empty($tasks)): ?>
 			<div class="overflow-auto">

@@ -18,7 +18,7 @@ class TasksModel extends Model
 		'erinnerung',
 		'notiz',
 		'erledigt',
-		'geloescht'
+		'geloescht',
 		'boardid'
 	];
 
@@ -28,16 +28,18 @@ class TasksModel extends Model
 		return $query->getResultArray();
 	}
 
-public function getTasks($board = "", $id = null): array
+	public function getTasks($board = 1, $id = null): array
 	{
 		if ($id == null) {
-			if (!empty($board)) {
-				$sql = "SELECT * FROM tasks WHERE boardid = ? ORDER BY tasks ASC";
-				return $this->queryBuilder($sql, [$board]);
-			} else {
-				$sql = "SELECT * FROM tasks ORDER BY tasks ASC";
-				return $this->queryBuilder($sql);
+			$sql = "SELECT * FROM spalten WHERE boardsid = ? ORDER BY sortid ASC";
+			$spalten = $this->queryBuilder($sql, [$board]);
+			$result = [];
+			foreach ($spalten as $spalte) {
+				$sql = "SELECT * FROM tasks WHERE spaltenid = ? ORDER BY sortid ASC";
+				$tasks = $this->queryBuilder($sql, [$spalte['id']]);
+				$result[$spalte['id']] = $tasks;
 			}
+			return $result;
 		} else return $this->find($id);
 	}
 }
