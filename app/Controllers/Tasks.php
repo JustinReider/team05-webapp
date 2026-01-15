@@ -29,8 +29,39 @@ class Tasks extends BaseController
 		$model = new TasksModel();
 		$data['title'] = 'Neue Task erstellen';
 		$data['task'] = null;
+        $data['todo']=0;
 		return view('tasks/new', $data);
 	}
+
+    public function getEdit($id)
+    {
+        $model = new TasksModel();
+        $task = $model->getTasks($id);
+
+        if (empty($task)) {
+            return redirect()->to(base_url().'/tasks');
+        }
+        $data['title'] = 'Task bearbeiten';
+        $data['task'] = $task;
+        $data['todo'] = 1;
+        return view('tasks/new', $data);
+    }
+
+
+    public function getDelete($id)
+    {
+        $model = new TasksModel();
+        $task = $model->getTasks($id);
+
+        if (empty($task)) {
+            return redirect()->to(base_url().'/tasks');
+        }
+
+        $data['title'] = 'Task löschen';
+        $data['task'] = $task;
+        $data['todo'] = 2;
+        return view('tasks/new', $data);
+    }
 
 	public function postSave()
 	{
@@ -46,8 +77,21 @@ class Tasks extends BaseController
 			'erledigt'         => 0,
 			'geloescht'        => 0
 		];
+        if (empty($id)) {
+            if ($model->insert($saveData)) {
+                return redirect()->to(base_url().'/tasks');
+            } else {
+                return redirect()->back();
+            }
+        }else {
 
-		$model->insert($saveData);
-		return redirect()->to(base_url('tasks'));
+    // UPDATE - Task aktualisieren
+        if ($model->update($id, $saveData)) {
+            return redirect()->to(base_url('/tasks'));
+        } else {
+            return redirect()->back()
+        ->withInput()->with('error', 'Fehler beim Aktualisieren der Task!');
+        }
+            }
 	}
 }
