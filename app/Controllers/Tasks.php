@@ -94,4 +94,25 @@ class Tasks extends BaseController
         }
             }
 	}
+
+
+    public function postDelete()
+    {
+        $model = new TasksModel();
+        $id = $this->request->getPost('id');
+
+        if (!empty($id)) {
+            if ($model->delete($id)) {
+                return redirect()->to(base_url('/tasks'))
+                    ->with('success', 'Task wurde erfolgreich gelöscht!');
+            } else {
+                return redirect()->to(base_url('/tasks'))
+                    ->with('error', 'Fehler beim Löschen der Task!');
+            }
+        }
+
+        return redirect()->to(base_url('/tasks'))
+            ->with('error', 'Keine Task-ID angegeben!');
+    }
+
 }
