@@ -69,8 +69,8 @@
 															<i class="bi bi-pencil"></i>
 														</a>
 														<!-- Platz für Icon: Löschen -->
-														<form action="tasks/delete?task=<?= esc($task['id']) ?>" method="POST" class="d-inline">
-															<button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
+														<form action="tasks/delete?task=<?= esc($task['id']) ?>" method="POST" class="d-inline delete-task-form">
+															<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center delete-task-btn" style="width:32px;height:32px;" data-task-id="<?= esc($task['id']) ?>">
 																<i class="bi bi-trash"></i>
 															</button>
 														</form>
@@ -79,12 +79,12 @@
 												<ul class="list-group list-group-flush mb-2">
 													<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenid']) ?></li>
 													<li class="list-group-item bg-transparent"><i class="bi bi-clock-history me-2"></i><?= (new DateTime($task['erstelldatum']))->format('d.m.Y') ?></li>
-<?php if (!empty($task['erinnerungsdatum']) && !empty($task['erinnerung']) && $task['erinnerung'] > 0): ?>
-    <li class="list-group-item bg-transparent">
-        <i class="bi bi-stopwatch me-2"></i>
-        <?= (new DateTime($task['erinnerungsdatum']))->format('d.m.Y H:i') ?>
-    </li>
-<?php endif; ?>
+													<?php if (!empty($task['erinnerungsdatum']) && !empty($task['erinnerung']) && $task['erinnerung'] > 0): ?>
+														<li class="list-group-item bg-transparent">
+															<i class="bi bi-stopwatch me-2"></i>
+															<?= (new DateTime($task['erinnerungsdatum']))->format('d.m.Y H:i') ?>
+														</li>
+													<?php endif; ?>
 													<li class="list-group-item bg-transparent"><strong>Notizen:</strong> <?= esc($task['notizen']) ?></li>
 												</ul>
 												<div class="d-flex align-items-end ms-3">
@@ -107,6 +107,45 @@
 	</div>
 	<!-- FOOTER -->
 	<?= $this->include("templates/footer.php"); ?>
+
+	<!-- Delete Confirmation Modal -->
+	<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteConfirmModalLabel">Löschen bestätigen</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					Sind Sie sicher, dass Sie diese Aufgabe löschen möchten?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" id="confirmDeleteBtn">Löschen</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		let formToDelete = null;
+		document.querySelectorAll('.delete-task-btn').forEach(btn => {
+			btn.addEventListener('click', function(e) {
+				e.preventDefault();
+				formToDelete = this.closest('form');
+				const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+				modal.show();
+			});
+		});
+		document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+			if (formToDelete) {
+				formToDelete.submit();
+			}
+			const modalEl = document.getElementById('deleteConfirmModal');
+			const modal = bootstrap.Modal.getInstance(modalEl);
+			modal.hide();
+		});
+	</script>
 
 </body>
 
