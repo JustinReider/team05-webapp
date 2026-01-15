@@ -19,7 +19,6 @@ class TasksModel extends Model
 		'notiz',
 		'erledigt',
 		'geloescht',
-		'boardid'
 	];
 
 	public function queryBuilder($sql, $binds = [])

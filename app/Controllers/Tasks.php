@@ -20,7 +20,8 @@ class Tasks extends BaseController
 		$data['tasks'] = $tm->getColumnsTasks($board);
 
 		$data['boardName'] = $bm->getBoardName($board)['board'];
-		
+		$data['boards'] = $bm->getBoards();
+
 		return view('pages/tasks', $data);
 	}
 
@@ -29,39 +30,39 @@ class Tasks extends BaseController
 		$model = new TasksModel();
 		$data['title'] = 'Neue Task erstellen';
 		$data['task'] = null;
-        $data['todo']=0;
+		$data['todo'] = 0;
 		return view('tasks/new', $data);
 	}
 
-    public function getEdit($id)
-    {
-        $model = new TasksModel();
-        $task = $model->getTasks($id);
+	public function getEdit($id)
+	{
+		$model = new TasksModel();
+		$task = $model->getTasks($id);
 
-        if (empty($task)) {
-            return redirect()->to(base_url().'/tasks');
-        }
-        $data['title'] = 'Task bearbeiten';
-        $data['task'] = $task;
-        $data['todo'] = 1;
-        return view('tasks/new', $data);
-    }
+		if (empty($task)) {
+			return redirect()->to(base_url() . '/tasks');
+		}
+		$data['title'] = 'Task bearbeiten';
+		$data['task'] = $task;
+		$data['todo'] = 1;
+		return view('tasks/new', $data);
+	}
 
 
-    public function getDelete($id)
-    {
-        $model = new TasksModel();
-        $task = $model->getTasks($id);
+	public function getDelete($id)
+	{
+		$model = new TasksModel();
+		$task = $model->getTasks($id);
 
-        if (empty($task)) {
-            return redirect()->to(base_url().'/tasks');
-        }
+		if (empty($task)) {
+			return redirect()->to(base_url() . '/tasks');
+		}
 
-        $data['title'] = 'Task löschen';
-        $data['task'] = $task;
-        $data['todo'] = 2;
-        return view('tasks/new', $data);
-    }
+		$data['title'] = 'Task löschen';
+		$data['task'] = $task;
+		$data['todo'] = 2;
+		return view('tasks/new', $data);
+	}
 
 	public function postSave()
 	{
@@ -69,50 +70,48 @@ class Tasks extends BaseController
 		$saveData = [
 			'tasks'            => $this->request->getPost('tasks'),
 			'taskartenid'      => $this->request->getPost('taskartenid'),
-			'personenid'       => $this->request->getPost('personenid'),
 			'spaltenid'        => $this->request->getPost('spaltenid'),
+			'sortid'           => $this->request->getPost('sortid'),
 			'erinnerungsdatum' => $this->request->getPost('erinnerungsdatum'),
-			'notiz'            => $this->request->getPost('notiz'),
 			'erinnerung'       => $this->request->getPost('erinnerung'),
+			'notizen'            => $this->request->getPost('notiz'),
 			'erledigt'         => 0,
 			'geloescht'        => 0
 		];
-        if (empty($id)) {
-            if ($model->insert($saveData)) {
-                return redirect()->to(base_url().'/tasks');
-            } else {
-                return redirect()->back();
-            }
-        }else {
 
-    // UPDATE - Task aktualisieren
-        if ($model->update($id, $saveData)) {
-            return redirect()->to(base_url('/tasks'));
-        } else {
-            return redirect()->back()
-        ->withInput()->with('error', 'Fehler beim Aktualisieren der Task!');
-        }
-            }
+		if (empty($id)) {
+			if (!$model->insert($saveData)) {
+				// Show errors for debugging
+				return $this->response->setStatusCode(400)->setBody('Insert failed: ' . print_r($model->errors(), true));
+			}
+			return redirect()->to(base_url('tasks'));
+		} else {
+			// UPDATE - Task aktualisieren
+			if ($model->update($id, $saveData)) {
+				return redirect()->to(base_url('/tasks'));
+			} else {
+				return redirect()->back()
+					->withInput()->with('error', 'Fehler beim Aktualisieren der Task!');
+			}
+		}
 	}
 
+	public function postDelete()
+	{
+		$model = new TasksModel();
+		$id = $this->request->getPost('id');
 
-    public function postDelete()
-    {
-        $model = new TasksModel();
-        $id = $this->request->getPost('id');
+		if (!empty($id)) {
+			if ($model->delete($id)) {
+				return redirect()->to(base_url('/tasks'))
+					->with('success', 'Task wurde erfolgreich gelöscht!');
+			} else {
+				return redirect()->to(base_url('/tasks'))
+					->with('error', 'Fehler beim Löschen der Task!');
+			}
+		}
 
-        if (!empty($id)) {
-            if ($model->delete($id)) {
-                return redirect()->to(base_url('/tasks'))
-                    ->with('success', 'Task wurde erfolgreich gelöscht!');
-            } else {
-                return redirect()->to(base_url('/tasks'))
-                    ->with('error', 'Fehler beim Löschen der Task!');
-            }
-        }
-
-        return redirect()->to(base_url('/tasks'))
-            ->with('error', 'Keine Task-ID angegeben!');
-    }
-
+		return redirect()->to(base_url('/tasks'))
+			->with('error', 'Keine Task-ID angegeben!');
+	}
 }

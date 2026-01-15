@@ -37,17 +37,22 @@
 							<?php echo ($boardName); ?>
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="boardDropdown">
-							<li><a class="dropdown-item" href="?board=1">Board 1</a></li>
-							<li><a class="dropdown-item" href="?board=2">Board 2</a></li>
+							<?php foreach ($boards as $board): ?>
+								<li>
+									<a class="dropdown-item" href="?board=<?= esc($board['id']) ?>">
+										<?= esc($board['board']) ?>
+									</a>
+								</li>
+							<?php endforeach; ?>
 						</ul>
 					</div>
 				</div>
 
 				<?php if (!empty($tasks)): ?>
 					<div class="overflow-auto">
-<div class="d-flex gap-3 mt-3 justify-content-center align-items-start">
+						<div class="d-flex gap-3 mt-3 justify-content-center align-items-start">
 							<?php foreach ($tasks as $spaltenId => $spalteData): if (empty($spalteData)) continue ?>
-<div class="card h-100" style="flex: 1 1 0; min-width: 200px;">
+								<div class="card h-100" style="flex: 1 1 0; min-width: 200px;">
 									<div class="card-header">
 										<h5 class="text-center mb-3"><?= esc($spalteData['spalte']) ?></h5>
 										<h6 class="text-center mb-3"><?= esc($spalteData['spaltenbeschreibung']) ?></h6>
@@ -60,11 +65,11 @@
 												</div>
 												<ul class="list-group list-group-flush mb-2">
 													<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenid']) ?></li>
-													<li class="list-group-item bg-transparent"><strong>Erstellt:</strong> <?= (new DateTime($task['erstelldatum']))->format('d.m.Y') ?></li>
-													<li class="list-group-item bg-transparent"><strong>Erinnerung:</strong> <?= (new DateTime($task['erinnerungsdatum']))->format('d.m.Y H:i') ?></li>
+													<li class="list-group-item bg-transparent"><i class="bi bi-clock-history me-2"></i><?= (new DateTime($task['erstelldatum']))->format('d.m.Y') ?></li>
+													<?= !empty($task['erinnerungsdatum']) ? '<li class="list-group-item bg-transparent"><i class="bi bi-stopwatch me-2"></i>' . (new DateTime($task['erinnerungsdatum']))->format('d.m.Y H:i') . '</li>' : '' ?>
 													<li class="list-group-item bg-transparent"><strong>Notizen:</strong> <?= esc($task['notizen']) ?></li>
 												</ul>
-												<div class="d-flex align-items-end">
+												<div class="d-flex align-items-end ms-3">
 													<span class="badge text-bg-<?= esc($task['erledigt']) ? 'success' : 'secondary' ?>">
 														<?= esc($task['erledigt']) ? 'Erledigt' : 'Nicht erledigt' ?>
 													</span>
