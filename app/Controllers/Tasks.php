@@ -34,18 +34,19 @@ class Tasks extends BaseController
 		return view('tasks/new', $data);
 	}
 
-	public function getEdit($id)
+	public function getEdit()
 	{
+		$id = $this->request->getGet('task');
 		$model = new TasksModel();
-		$task = $model->getTasks($id);
-
+		$task = $model->getTask($id);
+		
 		if (empty($task)) {
 			return redirect()->to(base_url() . '/tasks');
 		}
 		$data['title'] = 'Task bearbeiten';
 		$data['task'] = $task;
 		$data['todo'] = 1;
-		return view('tasks/new', $data);
+		return view('tasks/update', $data);
 	}
 
 
@@ -72,13 +73,13 @@ class Tasks extends BaseController
 			'taskartenid'      => $this->request->getPost('taskartenid'),
 			'spaltenid'        => $this->request->getPost('spaltenid'),
 			'sortid'           => $this->request->getPost('sortid'),
-			'erinnerungsdatum' => $this->request->getPost('erinnerungsdatum'),
-			'erinnerung'       => $this->request->getPost('erinnerung'),
-			'notizen'            => $this->request->getPost('notiz'),
+'erinnerungsdatum' => $this->request->getPost('erinnerungsdatum') ?: null,
+'erinnerung'       => $this->request->getPost('erinnerung') ? 1 : 0,
+			'notizen'            => $this->request->getPost('notizen'),
 			'erledigt'         => 0,
 			'geloescht'        => 0
 		];
-
+		$id = $this->request->getGet('task');
 		if (empty($id)) {
 			if (!$model->insert($saveData)) {
 				// Show errors for debugging
@@ -99,19 +100,19 @@ class Tasks extends BaseController
 	public function postDelete()
 	{
 		$model = new TasksModel();
-		$id = $this->request->getPost('id');
+		$id = $this->request->getGet('task');
 
 		if (!empty($id)) {
 			if ($model->delete($id)) {
-				return redirect()->to(base_url('/tasks'))
+				return redirect()->to(base_url('tasks'))
 					->with('success', 'Task wurde erfolgreich gelöscht!');
 			} else {
-				return redirect()->to(base_url('/tasks'))
+				return redirect()->to(base_url('tasks'))
 					->with('error', 'Fehler beim Löschen der Task!');
 			}
 		}
 
-		return redirect()->to(base_url('/tasks'))
+		return redirect()->to(base_url('tasks'))
 			->with('error', 'Keine Task-ID angegeben!');
 	}
 }

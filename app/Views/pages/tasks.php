@@ -7,6 +7,7 @@
 	<title>Tasks</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 	<link rel="stylesheet" href="<?= base_url('style.css') ?>">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <script
@@ -29,7 +30,7 @@
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<a href="tasks/new">
 						<button type="button" class="btn btn-primary">
-							<i class="fas"></i>Erstellen
+							<i class="fas"></i>Neu
 						</button>
 					</a>
 					<div class="dropdown">
@@ -60,13 +61,30 @@
 									<div class="card-body">
 										<?php foreach ($spalteData['tasks'] as $task): ?>
 											<div class="shadow-sm mb-3 border-2 rounded-4 p-3 bg-body-tertiary flex-grow-1">
-												<div class="d-flex align-items-center mb-2">
-													<h6 class="text-center mb-0"><?= esc($task['tasks']) ?></h6>
+												<div class="d-flex align-items-center justify-content-between mb-2">
+													<h6 class="mb-0 text-start flex-grow-1"><?= esc($task['tasks']) ?></h6>
+													<div class="d-flex gap-2 ms-2">
+														<!-- Platz für Icon: Editieren -->
+														<a href="tasks/update?task=<?= esc($task['id']) ?>" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
+															<i class="bi bi-pencil"></i>
+														</a>
+														<!-- Platz für Icon: Löschen -->
+														<form action="tasks/delete?task=<?= esc($task['id']) ?>" method="POST" class="d-inline">
+															<button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
+																<i class="bi bi-trash"></i>
+															</button>
+														</form>
+													</div>
 												</div>
 												<ul class="list-group list-group-flush mb-2">
 													<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenid']) ?></li>
 													<li class="list-group-item bg-transparent"><i class="bi bi-clock-history me-2"></i><?= (new DateTime($task['erstelldatum']))->format('d.m.Y') ?></li>
-													<?= !empty($task['erinnerungsdatum']) ? '<li class="list-group-item bg-transparent"><i class="bi bi-stopwatch me-2"></i>' . (new DateTime($task['erinnerungsdatum']))->format('d.m.Y H:i') . '</li>' : '' ?>
+<?php if (!empty($task['erinnerungsdatum']) && !empty($task['erinnerung']) && $task['erinnerung'] > 0): ?>
+    <li class="list-group-item bg-transparent">
+        <i class="bi bi-stopwatch me-2"></i>
+        <?= (new DateTime($task['erinnerungsdatum']))->format('d.m.Y H:i') ?>
+    </li>
+<?php endif; ?>
 													<li class="list-group-item bg-transparent"><strong>Notizen:</strong> <?= esc($task['notizen']) ?></li>
 												</ul>
 												<div class="d-flex align-items-end ms-3">
