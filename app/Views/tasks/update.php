@@ -22,6 +22,11 @@
 				<h2 class="card-title">Task bearbeiten</h2>
 			</div>
 			<div class="card-body">
+				<?php if (isset($validation)): ?>
+					<div class="alert alert-danger">
+						<?= $validation->listErrors() ?>
+					</div>
+				<?php endif; ?>
 				<form method="POST" action="<?= base_url('public/tasks/save/' . $task['id']) ?>">
 					<?= csrf_field() ?>
 					<input type="hidden" name="id" value="<?= esc($task['id']) ?>">
@@ -37,7 +42,7 @@
 					<div class="row mb-3">
 						<label class="col-sm-2 col-form-label">Notizen</label>
 						<div class="col-sm-10">
-<textarea class="form-control" name="notizen" rows="4" placeholder="Notizen zum Task" required><?= esc($task['notizen']) ?></textarea>
+							<textarea class="form-control" name="notizen" rows="4" placeholder="Notizen zum Task" required><?= esc($task['notizen']) ?></textarea>
 						</div>
 					</div>
 					<!-- Taskart -->
@@ -65,7 +70,7 @@
 					<div class="row mb-3">
 						<label class="col-sm-2 col-form-label">Erinnerungsdatum</label>
 						<div class="col-sm-10">
-<input type="date" class="form-control" name="erinnerungsdatum" value="<?= esc($task['erinnerungsdatum'] ? date('Y-m-d', strtotime($task['erinnerungsdatum'])) : '') ?>">
+							<input type="date" class="form-control" name="erinnerungsdatum" value="<?= esc($task['erinnerungsdatum'] ? date('Y-m-d', strtotime($task['erinnerungsdatum'])) : '') ?>">
 						</div>
 					</div>
 					<!-- Erinnerung -->

@@ -66,6 +66,60 @@ class Tasks extends BaseController
 
 	public function postSave($id = null)
 	{
+		$validation = \Config\Services::validation();
+
+		$rules = [
+			'tasks' => [
+				'label' => 'Task',
+				'rules' => 'required',
+				'errors' => [
+					'required' => 'Bitte das Feld "Task" ausfüllen.'
+				]
+			],
+			'notizen' => [
+				'label' => 'Notizen',
+				'rules' => 'required',
+				'errors' => [
+					'required' => 'Bitte das Feld "Notizen" ausfüllen.'
+				]
+			],
+			'spaltenid' => [
+				'label' => 'Spalten-ID',
+				'rules' => 'required|integer',
+				'errors' => [
+					'required' => 'Bitte eine Spalte auswählen.',
+					'integer' => 'Die Spalten-ID muss eine Zahl sein.'
+				]
+			],
+			'taskartenid' => [
+				'label' => 'Taskarten-ID',
+				'rules' => 'required|integer',
+				'errors' => [
+					'required' => 'Bitte eine Taskart auswählen.',
+					'integer' => 'Die Taskarten-ID muss eine Zahl sein.'
+				]
+			],
+			'sortid' => [
+				'label' => 'Sortier-ID',
+				'rules' => 'required|integer',
+				'errors' => [
+					'required' => 'Bitte eine Sortier-ID angeben.',
+					'integer' => 'Die Sortier-ID muss eine Zahl sein.'
+				]
+			],
+		];
+
+		if (! $this->validate($rules)) {
+			$data = [
+				'validation' => $validation,
+				'title' => empty($id) ? 'Neue Task erstellen' : 'Task bearbeiten',
+				'task' => $this->request->getPost(),
+				'todo' => empty($id) ? 0 : 1,
+			];
+			$view = empty($id) ? 'tasks/new' : 'tasks/update';
+			return view($view, $data);
+		}
+
 		$model = new TasksModel();
 		$saveData = [
 			'tasks'            => $this->request->getPost('tasks'),

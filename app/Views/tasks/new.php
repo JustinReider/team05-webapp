@@ -28,64 +28,69 @@
 				<h2 class="card-title">Task erstellen</h2>
 			</div>
 			<div class="card-body">
+				<?php if (isset($validation)): ?>
+					<div class="alert alert-danger">
+						<?= $validation->listErrors() ?>
+					</div>
+				<?php endif; ?>
 				<form method="POST" action="<?= base_url('public/tasks/save') ?>">
 					<?= csrf_field() ?>
 					<input type="hidden" name="personenid" value="1">
-<!-- Task-Bezeichnung -->
-<div class="row mb-3">
-	<label class="col-sm-2 col-form-label">Tasks</label>
-	<div class="col-sm-10">
-		<input type="text" class="form-control" name="tasks" placeholder="Task-Bezeichnung eingeben" required>
-	</div>
-</div>
+					<!-- Task-Bezeichnung -->
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label">Tasks</label>
+						<div class="col-sm-10">
+							<input type="text" class="form-control" name="tasks" placeholder="Task-Bezeichnung eingeben" required>
+						</div>
+					</div>
 
-<!-- Taskbeschreibung -->
-<div class="row mb-3">
-	<label class="col-sm-2 col-form-label">Notizen</label>
-	<div class="col-sm-10">
-<textarea class="form-control" name="notizen" rows="4" placeholder="Notizen zum Task" required></textarea>
-	</div>
-</div>
+					<!-- Taskbeschreibung -->
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label">Notizen</label>
+						<div class="col-sm-10">
+							<textarea class="form-control" name="notizen" rows="4" placeholder="Notizen zum Task" required></textarea>
+						</div>
+					</div>
 
-<!-- Taskart -->
-<div class="row mb-4">
-	<label class="col-sm-2 col-form-label">Taskart auswählen</label>
-	<div class="col-sm-10">
-		<input type="number" class="form-control" name="taskartenid" placeholder="Taskart-Nummer angeben" min="1" step="1" required>
-	</div>
-</div>
+					<!-- Taskart -->
+					<div class="row mb-4">
+						<label class="col-sm-2 col-form-label">Taskart auswählen</label>
+						<div class="col-sm-10">
+							<input type="number" class="form-control" name="taskartenid" placeholder="Taskart-Nummer angeben" min="1" step="1" required>
+						</div>
+					</div>
 
-<!-- Sortid -->
-<div class="row mb-3">
-	<label class="col-sm-2 col-form-label">Sortid</label>
-	<div class="col-sm-10">
-		<input type="number" class="form-control" name="sortid" placeholder="Sortierreihenfolge angeben" min="1" step="1" required>
-	</div>
-</div>
+					<!-- Sortid -->
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label">Sortid</label>
+						<div class="col-sm-10">
+							<input type="number" class="form-control" name="sortid" placeholder="Sortierreihenfolge angeben" min="1" step="1" required>
+						</div>
+					</div>
 
-<!-- Spalte auswählen -->
-<div class="row mb-4">
-	<label class="col-sm-2 col-form-label">Spalte auswählen</label>
-	<div class="col-sm-10">
-		<input type="number" class="form-control" name="spaltenid" placeholder="Spaltennummer angeben" min="1" step="1" required>
-	</div>
-</div>
+					<!-- Spalte auswählen -->
+					<div class="row mb-4">
+						<label class="col-sm-2 col-form-label">Spalte auswählen</label>
+						<div class="col-sm-10">
+							<input type="number" class="form-control" name="spaltenid" placeholder="Spaltennummer angeben" min="1" step="1" required>
+						</div>
+					</div>
 
 					<!-- Erinnerungsdatum -->
 					<div class="row mb-3">
 						<label class="col-sm-2 col-form-label">Erinnerungsdatum</label>
 						<div class="col-sm-10">
-<input type="date" class="form-control" name="erinnerungsdatum">
+							<input type="date" class="form-control" name="erinnerungsdatum">
 						</div>
 					</div>
 
-<!-- Erinnerung -->
-<div class="row mb-3">
-	<label class="col-sm-2 col-form-label">Erinnerung</label>
-	<div class="col-sm-10 d-flex align-items-center">
-		<input type="checkbox" class="form-check-input me-2" name="erinnerung">
-	</div>
-</div>
+					<!-- Erinnerung -->
+					<div class="row mb-3">
+						<label class="col-sm-2 col-form-label">Erinnerung</label>
+						<div class="col-sm-10 d-flex align-items-center">
+							<input type="checkbox" class="form-check-input me-2" name="erinnerung">
+						</div>
+					</div>
 
 					<!-- Buttons -->
 					<div class="d-flex gap-2">
