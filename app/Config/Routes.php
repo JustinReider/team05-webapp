@@ -9,6 +9,7 @@ $routes->setAutoRoute(true);
 $routes->get('/', 'Home::index');
 $routes->get('/spalten', 'Spalten::index');
 $routes->get('/spalten/new', 'Spalten::new');
+$routes->post('/spalten/save', 'Spalten::postSave');
 $routes->get('/tasks', 'Tasks::getIndex');
 $routes->get('/tasks/new', 'Tasks::getNew');
 $routes->get('/tasks/(:num)', 'Tasks::getEdit/$1');

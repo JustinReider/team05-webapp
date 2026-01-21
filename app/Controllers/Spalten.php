@@ -21,13 +21,13 @@ class Spalten extends BaseController
         return view('spalten/new');
     }
 
-    public function save()
+    public function postSave($id = null)
     {
         $model = new SpaltenModel();
         $validation = \Config\Services::validation();
 
         if ($validation->run($_POST, 'spaltenbearbeiten')) {
-            $id = $this->request->getGet('spalte');
+            $id = $this->request->getPost('id');
 
             $saveData = [
                 'boardsid' => $this->request->getPost('boardsid'),
@@ -48,6 +48,6 @@ class Spalten extends BaseController
         $data['spalte'] = $_POST;
         $data['error'] = $validation->getErrors();
 
-        return view('spalten/form', $data);
+        return view('spalten/new', $data);
     }
 }
