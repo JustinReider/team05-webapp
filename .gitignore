@@ -128,3 +128,6 @@ _modules/*
 # Github ssh keys
 githubKey
 githubKey.pub
+
+# Database.php
+app/Config/Database.php

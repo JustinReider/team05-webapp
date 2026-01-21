@@ -1,0 +1,61 @@
+body, html {
+    height: 100%;
+}
+
+.navbar-custom {
+    background-color: #002060;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+/* Logo-Bild links */
+.navbar-logo {
+    width: auto;
+    height: 70px;
+}
+
+/* Menü-Links */
+.navbar-custom .nav-link {
+    color: #bfc9ff;
+    font-size: 18px;
+    border-radius: 12px;
+    transition: all 0.2s ease-in-out;
+}
+
+.navbar-custom .nav-link:hover {
+    color: white !important;
+    background-color: #61616380;
+    transform: translateY(-3px);
+}
+
+.icon-main-menu {
+    color: #ffffff !important;
+    margin-right: .25em;
+}
+
+.footer-custom {
+    background-color: #002060;
+    color: white;
+    padding: 20px 0;
+    height: 70px;
+    align-content: end;
+}
+.footer-custom a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+.footer-custom a:hover {
+    text-decoration: underline;
+}
+
+.bootstrap-table.bootstrap5 .float-left{
+    float: left;
+}
+
+.btn {
+    transition: all .1s ease-in-out;
+}
+.btn:active {
+    transform:scale(.9);
+}
