@@ -61,20 +61,18 @@
 									<div class="card-body">
 										<?php foreach ($spalteData['tasks'] as $task): ?>
 											<div class="shadow-sm mb-3 border-2 rounded-4 p-3 bg-body-tertiary flex-grow-1">
-												<div class="d-flex align-items-center justify-content-between mb-2">
-													<h6 class="mb-0 text-start flex-grow-1"><?= esc($task['tasks']) ?></h6>
-													<div class="d-flex gap-2 ms-2">
-														<!-- Platz für Icon: Editieren -->
-														<a href="tasks/update?task=<?= esc($task['id']) ?>" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
-															<i class="bi bi-pencil"></i>
-														</a>
-														<!-- Platz für Icon: Löschen -->
-														<form action="tasks/delete?task=<?= esc($task['id']) ?>" method="POST" class="d-inline delete-task-form">
-															<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center delete-task-btn" style="width:32px;height:32px;" data-task-id="<?= esc($task['id']) ?>">
-																<i class="bi bi-trash"></i>
-															</button>
-														</form>
-													</div>
+												<!-- Task-Titel -->
+												<h6 class="mb-2 text-start"><?= esc($task['tasks']) ?></h6>
+												<!-- Edit/Löschen Buttons: mobil unter dem Titel, sonst rechts oben -->
+												<div class="d-flex gap-2 mb-2 flex-row flex-md-row justify-content-md-end justify-content-start">
+													<a href="tasks/update/<?= esc($task['id']) ?>" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
+														<i class="bi bi-pencil"></i>
+													</a>
+													<form action="tasks/delete/<?= esc($task['id']) ?>" method="POST" class="d-inline delete-task-form">
+														<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center delete-task-btn" style="width:32px;height:32px;" data-task-id="<?= esc($task['id']) ?>">
+															<i class="bi bi-trash"></i>
+														</button>
+													</form>
 												</div>
 												<ul class="list-group list-group-flush mb-2">
 													<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenid']) ?></li>

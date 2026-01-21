@@ -22,7 +22,7 @@
 				<h2 class="card-title">Task bearbeiten</h2>
 			</div>
 			<div class="card-body">
-				<form method="POST" action="<?= base_url('public/tasks/save?task=' . $task['id']) ?>">
+				<form method="POST" action="<?= base_url('public/tasks/save/' . $task['id']) ?>">
 					<?= csrf_field() ?>
 					<input type="hidden" name="id" value="<?= esc($task['id']) ?>">
 					<input type="hidden" name="personenid" value="<?= esc($task['personenid'] ?? 1) ?>">

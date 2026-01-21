@@ -34,12 +34,11 @@ class Tasks extends BaseController
 		return view('tasks/new', $data);
 	}
 
-	public function getEdit()
+	public function getEdit($id)
 	{
-		$id = $this->request->getGet('task');
 		$model = new TasksModel();
 		$task = $model->getTask($id);
-		
+
 		if (empty($task)) {
 			return redirect()->to(base_url() . '/tasks');
 		}
@@ -65,7 +64,7 @@ class Tasks extends BaseController
 		return view('tasks/new', $data);
 	}
 
-	public function postSave()
+	public function postSave($id = null)
 	{
 		$model = new TasksModel();
 		$saveData = [
@@ -73,13 +72,12 @@ class Tasks extends BaseController
 			'taskartenid'      => $this->request->getPost('taskartenid'),
 			'spaltenid'        => $this->request->getPost('spaltenid'),
 			'sortid'           => $this->request->getPost('sortid'),
-'erinnerungsdatum' => $this->request->getPost('erinnerungsdatum') ?: null,
-'erinnerung'       => $this->request->getPost('erinnerung') ? 1 : 0,
+			'erinnerungsdatum' => $this->request->getPost('erinnerungsdatum') ?: null,
+			'erinnerung'       => $this->request->getPost('erinnerung') ? 1 : 0,
 			'notizen'            => $this->request->getPost('notizen'),
 			'erledigt'         => 0,
 			'geloescht'        => 0
 		];
-		$id = $this->request->getGet('task');
 		if (empty($id)) {
 			if (!$model->insert($saveData)) {
 				// Show errors for debugging
@@ -97,10 +95,9 @@ class Tasks extends BaseController
 		}
 	}
 
-	public function postDelete()
+	public function postDelete($id)
 	{
 		$model = new TasksModel();
-		$id = $this->request->getGet('task');
 
 		if (!empty($id)) {
 			if ($model->delete($id)) {
