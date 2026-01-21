@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Models\SpaltenModel;
+
 class Spalten extends BaseController
 {
     public function index() : string

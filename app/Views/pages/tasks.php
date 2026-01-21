@@ -61,18 +61,19 @@
 									<div class="card-body">
 										<?php foreach ($spalteData['tasks'] as $task): ?>
 											<div class="shadow-sm mb-3 border-2 rounded-4 p-3 bg-body-tertiary flex-grow-1">
-												<!-- Task-Titel -->
-												<h6 class="mb-2 text-start"><?= esc($task['tasks']) ?></h6>
-												<!-- Edit/Löschen Buttons: mobil unter dem Titel, sonst rechts oben -->
-												<div class="d-flex gap-2 mb-2 flex-row flex-md-row justify-content-md-end justify-content-start">
-													<a href="tasks/update/<?= esc($task['id']) ?>" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
-														<i class="bi bi-pencil"></i>
-													</a>
-													<form action="tasks/delete/<?= esc($task['id']) ?>" method="POST" class="d-inline delete-task-form">
-														<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center delete-task-btn" style="width:32px;height:32px;" data-task-id="<?= esc($task['id']) ?>">
-															<i class="bi bi-trash"></i>
-														</button>
-													</form>
+												<!-- Task-Titel und Edit/Löschen Buttons: mobil und bis lg unter dem Titel, ab lg rechts in einer Zeile -->
+												<div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-2 gap-2">
+													<h6 class="mb-0 text-start flex-grow-1"><?= esc($task['tasks']) ?></h6>
+													<div class="d-flex gap-2 justify-content-start justify-content-lg-end w-100 w-lg-auto">
+														<a href="tasks/<?= esc($task['id']) ?>" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center" style="width:32px;height:32px;">
+															<i class="bi bi-pencil"></i>
+														</a>
+														<form action="tasks/delete/<?= esc($task['id']) ?>" method="POST" class="d-inline delete-task-form">
+															<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center delete-task-btn" style="width:32px;height:32px;" data-task-id="<?= esc($task['id']) ?>">
+																<i class="bi bi-trash"></i>
+															</button>
+														</form>
+													</div>
 												</div>
 												<ul class="list-group list-group-flush mb-2">
 													<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenid']) ?></li>
