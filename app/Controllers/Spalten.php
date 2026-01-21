@@ -6,48 +6,80 @@ use App\Models\SpaltenModel;
 
 class Spalten extends BaseController
 {
-    public function index() : string
-    {
-        $model = new SpaltenModel();
+	public function index(): string
+	{
+		$model = new SpaltenModel();
 
-        $data = [
-            'spalten' => $model->getSpaltenListeMitTasks(),
-        ];
+		$data = [
+			'spalten' => $model->getSpaltenListe(),
+		];
 
-        return view('spalten/spalten', $data);
-    }
+		return view('spalten/spalten', $data);
+	}
 
-    public function new() : string {
-        return view('spalten/new');
-    }
+	public function getNew(): string
+	{
+		$data['title'] = 'Neue Spalte erstellen';
+		$data['spalte'] = null;
+		return view('spalten/spalte_form', $data);
+	}
 
-    public function postSave($id = null)
-    {
-        $model = new SpaltenModel();
-        $validation = \Config\Services::validation();
+	public function getEdit($id)
+	{
+		$model = new SpaltenModel();
+		$spalte = $model->getSpalte($id);
 
-        if ($validation->run($_POST, 'spaltenbearbeiten')) {
-            $id = $this->request->getPost('id');
+		if (empty($spalte)) {
+			return redirect()->to(base_url() . '/spalten');
+		}
+		$data['title'] = 'Spalte bearbeiten';
+		$data['spalte'] = $spalte;
+		return view('spalten/spalte_form', $data);
+	}
 
-            $saveData = [
-                'boardsid' => $this->request->getPost('boardsid'),
-                'spalte' => $this->request->getPost('spalte'),
-                'spaltenbeschreibung' => $this->request->getPost('spaltenbeschreibung'),
-                'sortid' => $this->request->getPost('sortid'),
-            ];
+	public function postSave($id = null)
+	{
+		$validation = \Config\Services::validation();
 
-            if (empty($id)) {
-                $model->insert($saveData);
-            } else {
-                $model->update($id, $saveData);
-            }
+		if ($validation->run($_POST, 'spaltenbearbeiten')) {
+			$model = new SpaltenModel();
+			$saveData = [
+				'boardsid' => $this->request->getPost('boardsid'),
+				'spalte' => $this->request->getPost('spalte'),
+				'spaltenbeschreibung' => $this->request->getPost('spaltenbeschreibung'),
+				'sortid' => $this->request->getPost('sortid'),
+			];
 
-            return redirect()->to(base_url('spalten'));
-        }
+			if (empty($id)) {
+				$model->insert($saveData);
+			} else {
+				$model->update($id, $saveData);
+			}
 
-        $data['spalte'] = $_POST;
-        $data['error'] = $validation->getErrors();
+			return redirect()->to(base_url('spalten'));
+		}
 
-        return view('spalten/new', $data);
-    }
+		$data['spalte'] = $_POST;
+		$data['error'] = $validation->getErrors();
+
+		return view('spalten/spalte_form', $data);
+	}
+
+	public function postDelete($id)
+	{
+		$model = new SpaltenModel();
+
+		if (!empty($id)) {
+			if ($model->delete($id)) {
+				return redirect()->to(base_url('spalten'))
+					->with('success', 'Spalte wurde erfolgreich gelöscht!');
+			} else {
+				return redirect()->to(base_url('spalten'))
+					->with('error', 'Fehler beim Löschen der Spalte!');
+			}
+		}
+
+		return redirect()->to(base_url('spalten'))
+			->with('error', 'Keine Spalten-ID angegeben!');
+	}
 }

@@ -27,11 +27,9 @@ class Tasks extends BaseController
 
 	public function getNew()
 	{
-		$model = new TasksModel();
 		$data['title'] = 'Neue Task erstellen';
 		$data['task'] = null;
-		$data['todo'] = 0;
-		return view('tasks/new', $data);
+		return view('tasks/task_form', $data);
 	}
 
 	public function getEdit($id)
@@ -44,79 +42,22 @@ class Tasks extends BaseController
 		}
 		$data['title'] = 'Task bearbeiten';
 		$data['task'] = $task;
-		$data['todo'] = 1;
-		return view('tasks/update', $data);
-	}
-
-
-	public function getDelete($id)
-	{
-		$model = new TasksModel();
-		$task = $model->getTasks($id);
-
-		if (empty($task)) {
-			return redirect()->to(base_url() . '/tasks');
-		}
-
-		$data['title'] = 'Task löschen';
-		$data['task'] = $task;
-		$data['todo'] = 2;
-		return view('tasks/new', $data);
+		return view('tasks/task_form', $data);
 	}
 
 	public function postSave($id = null)
 	{
 		$validation = \Config\Services::validation();
 
-		$rules = [
-			'tasks' => [
-				'label' => 'Task',
-				'rules' => 'required',
-				'errors' => [
-					'required' => 'Bitte das Feld "Task" ausfüllen.'
-				]
-			],
-			'notizen' => [
-				'label' => 'Notizen',
-				'rules' => 'required',
-				'errors' => [
-					'required' => 'Bitte das Feld "Notizen" ausfüllen.'
-				]
-			],
-			'spaltenid' => [
-				'label' => 'Spalten-ID',
-				'rules' => 'required|integer',
-				'errors' => [
-					'required' => 'Bitte eine Spalte auswählen.',
-					'integer' => 'Die Spalten-ID muss eine Zahl sein.'
-				]
-			],
-			'taskartenid' => [
-				'label' => 'Taskarten-ID',
-				'rules' => 'required|integer',
-				'errors' => [
-					'required' => 'Bitte eine Taskart auswählen.',
-					'integer' => 'Die Taskarten-ID muss eine Zahl sein.'
-				]
-			],
-			'sortid' => [
-				'label' => 'Sortier-ID',
-				'rules' => 'required|integer',
-				'errors' => [
-					'required' => 'Bitte eine Sortier-ID angeben.',
-					'integer' => 'Die Sortier-ID muss eine Zahl sein.'
-				]
-			],
-		];
-
-		if (! $this->validate($rules)) {
+		if (! $validation->run($_POST, 'tasksbearbeiten')) {
+			$task = $this->request->getPost();
+			if (!empty($id)) $task['id'] = $id;
 			$data = [
 				'validation' => $validation,
 				'title' => empty($id) ? 'Neue Task erstellen' : 'Task bearbeiten',
-				'task' => $this->request->getPost(),
-				'todo' => empty($id) ? 0 : 1,
+				'task' => $task,
 			];
-			$view = empty($id) ? 'tasks/new' : 'tasks/update';
+			$view = 'tasks/task_form';
 			return view($view, $data);
 		}
 
@@ -134,14 +75,12 @@ class Tasks extends BaseController
 		];
 		if (empty($id)) {
 			if (!$model->insert($saveData)) {
-				// Show errors for debugging
 				return $this->response->setStatusCode(400)->setBody('Insert failed: ' . print_r($model->errors(), true));
 			}
 			return redirect()->to(base_url('tasks'));
 		} else {
-			// UPDATE - Task aktualisieren
 			if ($model->update($id, $saveData)) {
-				return redirect()->to(base_url('/tasks'));
+				return redirect()->to(base_url('tasks'));
 			} else {
 				return redirect()->back()
 					->withInput()->with('error', 'Fehler beim Aktualisieren der Task!');

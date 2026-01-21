@@ -116,7 +116,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					Sind Sie sicher, dass Sie diese Aufgabe löschen möchten?
+					Sind Sie sicher, dass Sie diese Task löschen möchten?
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" id="confirmDeleteBtn">Löschen</button>

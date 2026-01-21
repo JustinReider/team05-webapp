@@ -63,5 +63,52 @@ class Validation extends BaseConfig
             ],
         ],
     ];
-
+		
+		public array $tasksbearbeiten = [
+			'tasks' => [
+				'label' => 'Task',
+				'rules' => 'required',
+				'errors' => [
+					'required' => 'Bitte das Feld "Task" ausfüllen.'
+				]
+			],
+			'notizen' => [
+				'label' => 'Notizen',
+				'rules' => 'required',
+				'errors' => [
+					'required' => 'Bitte das Feld "Notizen" ausfüllen.'
+				]
+			],
+			'spaltenid' => [
+				'label' => 'Spalten-ID',
+				'rules' => 'required|integer',
+				'errors' => [
+					'required' => 'Bitte eine Spalte auswählen.',
+					'integer' => 'Die Spalten-ID muss eine Zahl sein.'
+				]
+			],
+			'taskartenid' => [
+				'label' => 'Taskarten-ID',
+				'rules' => 'required|integer',
+				'errors' => [
+					'required' => 'Bitte eine Taskart auswählen.',
+					'integer' => 'Die Taskarten-ID muss eine Zahl sein.'
+				]
+			],
+			'sortid' => [
+				'label' => 'Sortier-ID',
+				'rules' => 'required|integer',
+				'errors' => [
+					'required' => 'Bitte eine Sortier-ID angeben.',
+					'integer' => 'Die Sortier-ID muss eine Zahl sein.'
+				]
+			],
+			'erinnerungsdatum' => [
+				'label' => 'Erinnerungsdatum',
+				'rules' => 'valid_date[Y-m-d]',
+				'errors' => [
+					'valid_date' => 'Bitte ein gültiges Datum angeben.'
+				]
+			],
+		];
 }
