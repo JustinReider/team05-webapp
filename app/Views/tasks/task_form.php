@@ -81,7 +81,7 @@
 					<!-- Buttons -->
 					<div class="d-flex gap-2">
 						<button type="submit" class="btn btn-success">Aktualisieren</button>
-						<a href="<?= base_url('tasks') ?>"><button type="button" class="btn btn-secondary">Abbrechen</button></a>
+						<a href="<?= isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('tasks') ?>" class="btn btn-secondary">Abbrechen</a>
 					</div>
 				</form>
 			</div>

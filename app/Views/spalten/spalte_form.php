@@ -88,7 +88,7 @@
 
 					<div class="d-flex gap-2">
 						<button type="submit" class="btn btn-success">Speichern</button>
-						<a href="<?= base_url('spalten') ?>" class="btn btn-secondary">Abbrechen</a>
+						<a href="<?= isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('spalten') ?>" class="btn btn-secondary">Abbrechen</a>
 					</div>
 				</form>
 			</div>
