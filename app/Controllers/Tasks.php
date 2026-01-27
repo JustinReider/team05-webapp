@@ -56,6 +56,7 @@ class Tasks extends BaseController
 				'validation' => $validation,
 				'title' => empty($id) ? 'Neue Task erstellen' : 'Task bearbeiten',
 				'task' => $task,
+				'origin' => base_url('tasks'),
 			];
 			$view = 'tasks/task_form';
 			return view($view, $data);

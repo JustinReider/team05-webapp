@@ -59,6 +59,8 @@ class Spalten extends BaseController
 			return redirect()->to(base_url('spalten'));
 		}
 
+		$data['origin'] = base_url('spalten');
+		$data['title'] = empty($id) ? 'Neue Spalte erstellen' : 'Spalte bearbeiten';
 		$data['spalte'] = $_POST;
 		$data['error'] = $validation->getErrors();
 

@@ -19,7 +19,7 @@
 	<div class="container mt-4 flex-fill">
 		<div class="card">
 			<div class="card-header">
-					<h2 class="card-title"><?= esc($title) ?></h2>
+				<h2 class="card-title"><?= esc($title) ?></h2>
 			</div>
 			<div class="card-body">
 				<?php if (isset($validation)): ?>
@@ -27,7 +27,7 @@
 						<?= $validation->listErrors() ?>
 					</div>
 				<?php endif; ?>
-				<form method="POST" action="<?= base_url('public/tasks/save' . ($task ? '/' . $task['id'] : '')) ?>">
+				<form method="POST" action="<?= base_url('public/tasks/save' . (isset($task['id']) ? '/' . $task['id'] : '')) ?>">
 					<?= csrf_field() ?>
 					<!-- Task-Bezeichnung -->
 					<div class="row mb-3">
@@ -81,7 +81,7 @@
 					<!-- Buttons -->
 					<div class="d-flex gap-2">
 						<button type="submit" class="btn btn-success">Aktualisieren</button>
-						<a href="<?= isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('tasks') ?>" class="btn btn-secondary">Abbrechen</a>
+						<a href="<?= isset($origin) ? $origin : (isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('tasks')) ?>" class="btn btn-secondary">Abbrechen</a>
 					</div>
 				</form>
 			</div>

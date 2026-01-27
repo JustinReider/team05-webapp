@@ -40,7 +40,7 @@
 				<?php endif; ?>
 
 
-				<form method="POST" action="<?= base_url('public/spalten/save' . ($spalte ? '/' . $spalte['id'] : '')) ?>">
+				<form method="POST" action="<?= base_url('public/spalten/save' . (isset($spalte['id']) ? '/' . $spalte['id'] : '')) ?>">
 					<?= csrf_field() ?>
 					<input type="hidden" name="boardsid" value="1">
 
@@ -88,7 +88,7 @@
 
 					<div class="d-flex gap-2">
 						<button type="submit" class="btn btn-success">Speichern</button>
-						<a href="<?= isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('spalten') ?>" class="btn btn-secondary">Abbrechen</a>
+						<a href="<?= isset($origin) ? $origin : (isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('spalten')) ?>" class="btn btn-secondary">Abbrechen</a>
 					</div>
 				</form>
 			</div>
