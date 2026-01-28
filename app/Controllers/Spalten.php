@@ -65,6 +65,7 @@ class Spalten extends BaseController
 		$data['origin'] = base_url('spalten');
 		$data['title'] = empty($id) ? 'Neue Spalte erstellen' : 'Spalte bearbeiten';
 		$data['spalte'] = $_POST;
+		$data['boards'] = new BoardsModel()->getBoards();
 		$data['error'] = $validation->getErrors();
 
 		return view('spalten/spalte_form', $data);
