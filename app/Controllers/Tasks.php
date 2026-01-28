@@ -6,6 +6,8 @@ use App\Models\TasksModel;
 use App\Models\BoardsModel;
 use App\Models\SpaltenModel;
 use App\Models\TaskartenModel;
+use App\Models\PersonenModel;
+use App\Models\PersonenTasksModel;
 
 class Tasks extends BaseController
 {
@@ -33,6 +35,10 @@ class Tasks extends BaseController
 		$data['task'] = null;
 		$data['spalten'] = new SpaltenModel()->getSpaltenWithBoards();
 		$data['taskarten'] = new TaskartenModel()->getTaskarten();
+
+        $data['personen'] = (new PersonenModel())->getData();
+        $data['task_personen_ids'] = [];
+
 		return view('tasks/task_form', $data);
 	}
 
@@ -49,6 +55,10 @@ class Tasks extends BaseController
 		$data['task'] = $task;
 		$data['spalten'] = new SpaltenModel()->getSpaltenByBoard($board);
 		$data['taskarten'] = new TaskartenModel()->getTaskarten();
+
+        $data['personen'] = (new PersonenModel())->getData();
+        $data['task_personen_ids'] = [];
+
 		return view('tasks/task_form', $data);
 	}
 
@@ -84,20 +94,42 @@ class Tasks extends BaseController
 			'erledigt'         => 0,
 			'geloescht'        => 0
 		];
-		if (empty($id)) {
-			if (!$model->insert($saveData)) {
-				return $this->response->setStatusCode(400)->setBody('Insert failed: ' . print_r($model->errors(), true));
+
+        if (empty($id)) {
+			if (!$model->insert($saveData)) { $id = $model->getInsertID();
+                $personenids = $this->request->getPost('personenids') ?? [];
+                $personenTasksModel = new PersonenTasksModel();
+
+                foreach ($personenids as $pid) {
+                    $personenTasksModel->insert([
+                        'taskid' => $id,
+                        'personenid' => $pid
+                    ]);
+                }
+
+                return $this->response->setStatusCode(400)->setBody('Insert failed: ' . print_r($model->errors(), true));
 			}
 			return redirect()->to(base_url('tasks'));
 		} else {
-			if ($model->update($id, $saveData)) {
+
+			if ($model->update($id, $saveData)) { $personenids = $this->request->getPost('personenids') ?? [];
+                $personenTasksModel = new PersonenTasksModel();
+                $personenTasksModel->where('taskid', $id)->delete();
+
+                foreach ($personenids as $pid) {
+                    $personenTasksModel->insert([
+                        'taskid' => $id,
+                        'personenid' => $pid
+                    ]);
+                }
 				return redirect()->to(base_url('tasks'));
 			} else {
 				return redirect()->back()
 					->withInput()->with('error', 'Fehler beim Aktualisieren der Task!');
 			}
 		}
-	}
+
+    }
 
 	public function postDelete($id)
 	{

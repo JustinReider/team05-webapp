@@ -251,6 +251,22 @@
 													</div>
 												</div>
 
+
+                                                <div class="task-meta-item small mt-2 d-flex flex-wrap gap-3 justify-content-between">
+                                                    <span>
+                                                        <i class="bi bi-person me-1 text-secondary"></i>
+                                                             <?php if (!empty($task['personen'])): ?>
+                                                              <?= esc(implode(', ', array_map(
+                                                               fn ($p) => trim(($p['vorname'] ?? '') . ' ' . ($p['nachname'] ?? '')),
+                                                                $task['personen']))) ?>
+                                                                  <?php else: ?>
+                                                                     Keine Person zugeordnet
+                                                             <?php endif; ?>
+                                                        </span>
+                                                </div>
+
+
+
 												<div class="d-flex justify-content-end mt-2">
 													<form action="tasks/toggle_done/<?= esc($task['id']) ?>" method="POST" class="d-inline toggle-done-form">
 														<button type="button"
