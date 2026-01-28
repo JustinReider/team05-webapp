@@ -22,6 +22,15 @@ class SpaltenModel extends Model
 		return $this->findAll();
 	}
 
+	public function getSpaltenWithBoards(): array
+	{
+		return $this->select("CONCAT(spalten.spalte, ' (', boards.board, ')') AS spalte, spalten.id, spalten.boardsid, spalten.spaltenbeschreibung, spalten.sortid", false)
+			->join('boards', 'boards.id = spalten.boardsid')
+			->orderBy('spalten.boardsid', 'ASC')
+			->orderBy('spalten.sortid', 'ASC')
+			->findAll();
+	}
+
 	public function getSpaltenListeMitTasks(): array
 	{
 		return $this->db->table('spalten')
@@ -67,5 +76,12 @@ class SpaltenModel extends Model
 	public function getSpalte($id)
 	{
 		return  $this->find($id);
+	}
+
+	public function getSpaltenByBoard($boardid)
+	{
+		return $this->where('boardsid', $boardid)
+			->orderBy('sortid', 'ASC')
+			->findAll();
 	}
 }

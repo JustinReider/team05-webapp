@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\BoardsModel;
 use App\Models\SpaltenModel;
 
 class Spalten extends BaseController
@@ -21,6 +22,7 @@ class Spalten extends BaseController
 	{
 		$data['title'] = 'Neue Spalte erstellen';
 		$data['spalte'] = null;
+		$data['boards'] = new BoardsModel()->getBoards();
 		return view('spalten/spalte_form', $data);
 	}
 
@@ -34,6 +36,7 @@ class Spalten extends BaseController
 		}
 		$data['title'] = 'Spalte bearbeiten';
 		$data['spalte'] = $spalte;
+		$data['boards'] = new BoardsModel()->getBoards();
 		return view('spalten/spalte_form', $data);
 	}
 

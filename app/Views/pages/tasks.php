@@ -52,7 +52,6 @@
 		.border-on-hover:hover {
 			border-color: #007bff !important;
 		}
-
 	</style>
 </head>
 
@@ -115,7 +114,7 @@
 													<h6 class="mb-0 text-start flex-grow-1 text-break"><?= esc($task['tasks']) ?></h6>
 												</div>
 												<ul class="list-group list-group-flush mb-2">
-													<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenid']) ?></li>
+													<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenicon']) ?></li>
 													<li class="list-group-item bg-transparent"><i class="bi bi-clock-history me-2"></i><?= (new DateTime($task['erstelldatum']))->format('d.m.Y') ?></li>
 													<?php if (!empty($task['erinnerungsdatum']) && !empty($task['erinnerung']) && $task['erinnerung'] > 0): ?>
 														<li class="list-group-item bg-transparent">

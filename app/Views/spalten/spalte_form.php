@@ -72,17 +72,14 @@
 					<div class="row mb-4">
 						<label class="col-sm-2 col-form-label">Board auswählen</label>
 						<div class="col-sm-10">
-							<!--
-        <select class="form-select" name="boardsid">
-            <option value="1">Allgemeine Todos</option>
-            <option value="2">Projekt A</option>
-            <option value="3">Projekt B</option>
-            <option value="4">Projekt C</option>
-        </select>
-        -->
-							<input type="number" class="form-control" name="boardsid" placeholder="Boards-ID angeben" min="1" step="1" required value="<?= isset(
-																																																																						$spalte['boardsid']
-																																																																					) ? esc($spalte['boardsid']) : '' ?>">
+							<select class="form-select" name="boardsid" required>
+								<option value="">Board auswählen</option>
+								<?php foreach ($boards as $board): ?>
+									<option value="<?= esc($board['id']) ?>" <?= (isset($spalte['boardsid']) && $spalte['boardsid'] == $board['id']) ? 'selected' : '' ?>>
+										<?= esc($board['board']) ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
 						</div>
 					</div>
 

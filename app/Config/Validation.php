@@ -42,6 +42,7 @@ class Validation extends BaseConfig
 	// Rules
 	// --------------------------------------------------------------------
 
+
 	public array $spaltenbearbeiten = [
 		'spalte' => [
 			'rules'  => 'required',
@@ -63,10 +64,11 @@ class Validation extends BaseConfig
 			],
 		],
 		'boardsid' => [
-			'rules' => 'required|integer',
+			'rules'  => 'required|integer|is_not_unique[boards.id]',
 			'errors' => [
-				'required' => 'Bitte ein Board auswählen.',
-				'integer'  => 'Die Boardid muss eine ganze Zahl sein.',
+				'required'      => 'Bitte ein Board auswählen.',
+				'integer'       => 'Die Board-ID muss eine ganze Zahl sein.',
+				'is_not_unique' => 'Das ausgewählte Board existiert nicht.',
 			],
 		],
 	];
@@ -88,18 +90,20 @@ class Validation extends BaseConfig
 		],
 		'spaltenid' => [
 			'label' => 'Spalten-ID',
-			'rules' => 'required|integer',
+			'rules' => 'required|integer|is_not_unique[spalten.id]',
 			'errors' => [
-				'required' => 'Bitte eine Spalte auswählen.',
-				'integer' => 'Die Spalten-ID muss eine Zahl sein.'
+				'required'      => 'Bitte eine Spalte auswählen.',
+				'integer'       => 'Die Spalten-ID muss eine Zahl sein.',
+				'is_not_unique' => 'Die ausgewählte Spalte existiert nicht.',
 			]
 		],
 		'taskartenid' => [
 			'label' => 'Taskarten-ID',
-			'rules' => 'required|integer',
+			'rules' => 'required|integer|is_not_unique[taskarten.id]',
 			'errors' => [
-				'required' => 'Bitte eine Taskart auswählen.',
-				'integer' => 'Die Taskarten-ID muss eine Zahl sein.'
+				'required'      => 'Bitte eine Taskart auswählen.',
+				'integer'       => 'Die Taskarten-ID muss eine Zahl sein.',
+				'is_not_unique' => 'Die ausgewählte Taskart existiert nicht.',
 			]
 		],
 		'sortid' => [
@@ -107,7 +111,7 @@ class Validation extends BaseConfig
 			'rules' => 'required|integer',
 			'errors' => [
 				'required' => 'Bitte eine Sortier-ID angeben.',
-				'integer' => 'Die Sortier-ID muss eine Zahl sein.'
+				'integer'  => 'Die Sortier-ID muss eine Zahl sein.'
 			]
 		],
 		'erinnerungsdatum' => [
@@ -116,6 +120,15 @@ class Validation extends BaseConfig
 			'errors' => [
 				'valid_date' => 'Bitte ein gültiges Datum angeben.'
 			]
+		],
+	];
+
+	public array $boardsbearbeiten = [
+		'board' => [
+			'rules' => 'required',
+			'errors' => [
+				'required' => 'Bitte Board-Bezeichnung ausfüllen.',
+			],
 		],
 	];
 }

@@ -47,7 +47,16 @@
 					<div class="row mb-4">
 						<label class="col-sm-2 col-form-label">Taskart auswählen</label>
 						<div class="col-sm-10">
-							<input type="number" class="form-control" name="taskartenid" placeholder="Taskart-Nummer angeben" min="1" step="1" required value="<?= esc($task['taskartenid'] ?? '') ?>">
+							<select class="form-select" name="taskartenid" required>
+								<option value="">Taskart auswählen</option>
+								<?php foreach (
+									$taskarten as $taskart
+								): ?>
+									<option value="<?= esc($taskart['id']) ?>" <?= (isset($task['taskartenid']) && $task['taskartenid'] == $taskart['id']) ? 'selected' : '' ?>>
+										<?= esc($taskart['taskart'] . ' ' . $taskart['taskartenicon']) ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
 						</div>
 					</div>
 					<!-- Sortid -->
@@ -61,7 +70,14 @@
 					<div class="row mb-4">
 						<label class="col-sm-2 col-form-label">Spalte auswählen</label>
 						<div class="col-sm-10">
-							<input type="number" class="form-control" name="spaltenid" placeholder="Spaltennummer angeben" min="1" step="1" required value="<?= esc($task['spaltenid'] ?? '') ?>">
+							<select class="form-select" name="spaltenid" required>
+								<option value="">Spalte auswählen</option>
+								<?php foreach ($spalten as $spalte): ?>
+									<option value="<?= esc($spalte['id']) ?>" <?= (isset($task['spaltenid']) && $task['spaltenid'] == $spalte['id']) ? 'selected' : '' ?>>
+										<?= esc($spalte['spalte']) ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
 						</div>
 					</div>
 					<!-- Erinnerungsdatum -->

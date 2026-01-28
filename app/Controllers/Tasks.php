@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Models\TasksModel;
 use App\Models\BoardsModel;
+use App\Models\SpaltenModel;
+use App\Models\TaskartenModel;
 
 class Tasks extends BaseController
 {
@@ -29,6 +31,8 @@ class Tasks extends BaseController
 	{
 		$data['title'] = 'Neue Task erstellen';
 		$data['task'] = null;
+		$data['spalten'] = new SpaltenModel()->getSpaltenWithBoards();
+		$data['taskarten'] = new TaskartenModel()->getTaskarten();
 		return view('tasks/task_form', $data);
 	}
 
@@ -36,12 +40,15 @@ class Tasks extends BaseController
 	{
 		$model = new TasksModel();
 		$task = $model->getTask($id);
+		$board = $model->getBoardByTask($id);
 
 		if (empty($task)) {
 			return redirect()->to(base_url() . '/tasks');
 		}
 		$data['title'] = 'Task bearbeiten';
 		$data['task'] = $task;
+		$data['spalten'] = new SpaltenModel()->getSpaltenByBoard($board);
+		$data['taskarten'] = new TaskartenModel()->getTaskarten();
 		return view('tasks/task_form', $data);
 	}
 
