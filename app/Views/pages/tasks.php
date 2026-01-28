@@ -9,22 +9,106 @@
 	<link rel="stylesheet" href="<?= base_url('style.css') ?>">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	<style>
-		@media (min-width: 576px) {
-			.task-action-buttons-responsive {
-				position: absolute !important;
-				top: 8px;
-				right: 4px;
-				margin-top: 0 !important;
-			}
+		/* --- 1. TASK CARD DESIGN --- */
+		.task-card {
+			border: none !important;
+			background-color: var(--bs-body);
+			transition: all 0.2s ease-in-out;
+			border-left: 4px solid transparent !important;
 		}
 
-		.top-end-absolute {
-			position: absolute !important;
-			top: 8px;
-			right: 4px;
-			z-index: 2;
+		/* Status-Farben am linken Rand */
+		.task-card.border-done {
+			border-left-color: #198754 !important;
 		}
 
+		.task-card.border-pending {
+			border-left-color: #6c757d !important;
+		}
+
+		.task-card:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1) !important;
+			border-left-color: #007bff !important;
+		}
+
+		/* Meta-Infos (Icons & Text unter dem Titel) */
+		.task-meta-list {
+			font-size: 0.85rem;
+			color: var(--bs-secondary-color);
+		}
+
+		.task-meta-item {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			margin-bottom: 4px;
+		}
+
+		/* --- 2. KEBAB-MENÜ (DROPDOWN) --- */
+		.task-menu-container {
+			position: absolute;
+			top: 10px;
+			right: 8px;
+			z-index: 10;
+		}
+
+		.btn-task-menu {
+			border: none;
+			background: transparent;
+			color: var(--bs-secondary-color);
+			padding: 0 5px;
+			font-size: 1.2rem;
+			line-height: 1;
+			border-radius: 50%;
+			transition: background 0.2s;
+		}
+
+		.btn-task-menu:hover {
+			background-color: var(--bs-secondary-bg);
+		}
+
+		/* Icon-Rotation bei Klick */
+		.dropdown.show .btn-task-menu i {
+			transform: rotate(90deg);
+			transition: transform 0.2s ease;
+		}
+
+		.btn-task-menu i {
+			display: inline-block;
+			transition: transform 0.2s ease;
+		}
+
+		/* --- 3. DROPDOWN ANIMATION --- */
+		.dropdown-menu {
+			display: block;
+			visibility: hidden;
+			opacity: 0;
+			transform: translateY(-10px) scale(0.95);
+			transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+			pointer-events: none;
+			right: 0 !important;
+			left: auto !important;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+			border: 1px solid var(--bs-border-color-translucent);
+		}
+
+		.dropdown-menu.show {
+			visibility: visible;
+			opacity: 1;
+			transform: translateY(0) scale(1);
+			pointer-events: auto;
+		}
+
+		.dropdown-item {
+			transition: background-color 0.2s, transform 0.1s;
+		}
+
+		.dropdown-item:active {
+			transform: scale(0.98);
+		}
+
+		/* --- 4. HOVER-EFFEKTE (PENCILS & MENÜS) --- */
 		.show-on-hover {
 			opacity: 0;
 			pointer-events: none;
@@ -37,20 +121,20 @@
 			pointer-events: auto;
 		}
 
+		/* Absolute Positionierung für Spalten-Pencil */
+		.top-end-absolute {
+			position: absolute !important;
+			top: 8px;
+			right: 4px;
+			z-index: 2;
+		}
+
+		/* Mobile: Hover-Elemente immer zeigen */
 		@media (hover: none) and (pointer: coarse) {
 			.show-on-hover {
 				opacity: 1 !important;
 				pointer-events: auto !important;
 			}
-		}
-
-		.border-on-hover {
-			border: 2px solid transparent;
-			transition: border-color 0.2s, border-width 0.2s;
-		}
-
-		.border-on-hover:hover {
-			border-color: #007bff !important;
 		}
 	</style>
 </head>
@@ -73,22 +157,29 @@
 			</div>
 			<div class="card-body">
 				<div class="d-flex justify-content-between align-items-center mb-3">
-					<a href="tasks/new">
-						<button type="button" class="btn btn-primary">
-							<i class="fas"></i>Neu
+					<a href="tasks/new" class="text-decoration-none">
+						<button type="button" class="btn btn-primary d-inline-flex align-items-center shadow-sm">
+							<i class="bi bi-plus-lg me-2"></i>Neu
 						</button>
 					</a>
 					<div class="dropdown">
 						<button class="btn btn-primary dropdown-toggle" type="button" id="boardDropdown" data-bs-toggle="dropdown" aria-expanded="false">
 							<?php echo ($boardName); ?>
 						</button>
-						<ul class="dropdown-menu" aria-labelledby="boardDropdown">
-							<?php foreach ($boards as $board): ?>
+
+						<ul class="dropdown-menu shadow" aria-labelledby="boardDropdown">
+							<?php foreach ($boards as $index => $board): ?>
 								<li>
-									<a class="dropdown-item" href="?board=<?= esc($board['id']) ?>">
+									<a class="dropdown-item d-flex align-items-center py-2" href="?board=<?= esc($board['id']) ?>">
 										<?= esc($board['board']) ?>
 									</a>
 								</li>
+
+								<?php if ($index < count($boards) - 1): ?>
+									<li>
+										<hr class="dropdown-divider">
+									</li>
+								<?php endif; ?>
 							<?php endforeach; ?>
 						</ul>
 					</div>
@@ -98,49 +189,73 @@
 					<div class="overflow-auto">
 						<div class="d-flex gap-3 mt-3 justify-content-start">
 							<?php foreach ($tasks as $spaltenId => $spalteData): if (empty($spalteData)) continue ?>
-								<div class="card h-100" style="flex: 1 1 0; min-width: 272px;">
+								<div class="card h-100 rounded-3" style="flex: 1 1 0; min-width: 272px;">
 									<div class="card-header show-on-hover-parent">
 										<h5 class="text-center mb-3"><?= esc($spalteData['spalte']) ?></h5>
 										<h6 class="text-center mb-3"><?= esc($spalteData['spaltenbeschreibung']) ?></h6>
-										<a href="<?= base_url("spalten/" . $spaltenId) ?>" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center shadow-sm bg-body top-end-absolute show-on-hover" style="width:32px;height:32px;">
+										<a href="<?= base_url("spalten/" . $spaltenId) ?>" class="btn btn-outline-secondary btn-sm top-end-absolute show-on-hover">
 											<i class="bi bi-pencil-fill"></i>
 										</a>
 									</div>
 									<div class="card-body">
 										<?php foreach ($spalteData['tasks'] as $task): ?>
-											<div class="shadow-sm mb-3 border-2 rounded-4 p-3 bg-body-tertiary flex-grow-1 position-relative task-card show-on-hover-parent border-on-hover">
-												<!-- Task-Titel und Edit/Löschen Buttons: mobil und bis lg unter dem Titel, ab lg rechts in einer Zeile -->
-												<div class="d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center mb-2 gap-2">
-													<h6 class="mb-0 text-start flex-grow-1 text-break"><?= esc($task['tasks']) ?></h6>
-												</div>
-												<ul class="list-group list-group-flush mb-2">
-													<li class="list-group-item bg-transparent"><strong>Art:</strong> <?= esc($task['taskartenicon']) ?></li>
-													<li class="list-group-item bg-transparent"><i class="bi bi-clock-history me-2"></i><?= (new DateTime($task['erstelldatum']))->format('d.m.Y') ?></li>
-													<?php if (!empty($task['erinnerungsdatum']) && !empty($task['erinnerung']) && $task['erinnerung'] > 0): ?>
-														<li class="list-group-item bg-transparent">
-															<i class="bi bi-stopwatch me-2"></i>
-															<?= (new DateTime($task['erinnerungsdatum']))->format('d.m.Y H:i') ?>
-														</li>
-													<?php endif; ?>
-													<li class="list-group-item bg-transparent"><strong>Notizen:</strong> <?= esc($task['notizen']) ?></li>
-												</ul>
-												<div class="d-flex align-items-end ms-3">
-													<span class="badge text-bg-<?= esc($task['erledigt']) ? 'success' : 'secondary' ?>">
-														<?= esc($task['erledigt']) ? 'Erledigt' : 'Nicht erledigt' ?>
-													</span>
-												</div>
-												<!-- Mobile: Buttons unten, relativ -->
-												<div class="d-flex gap-2 gap-sm-1 justify-content-end align-items-center task-action-buttons rounded p-1 mt-2 position-relative task-action-buttons-responsive show-on-hover">
-													<a href="tasks/<?= esc($task['id']) ?>" class="btn btn-outline-secondary btn-sm d-flex align-items-center justify-content-center shadow-sm bg-body" style="width:32px;height:32px;">
-														<i class="bi bi-pencil-fill"></i>
-													</a>
-													<form action="tasks/delete/<?= esc($task['id']) ?>" method="POST" class="d-inline delete-task-form">
-														<button type="button" class="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center shadow-sm delete-task-btn bg-body" style="width:32px;height:32px;" data-task-id="<?= esc($task['id']) ?>">
-															<i class="bi bi-trash-fill"></i>
+											<div class="task-card shadow-sm mb-3 rounded-4 p-3 show-on-hover-parent position-relative <?= $task['erledigt'] ? 'border-done' : 'border-pending' ?>">
+
+												<div class="task-menu-container">
+													<div class="dropdown">
+														<button class="btn-task-menu" type="button" data-bs-toggle="dropdown" data-bs-offset="0,10">
+															<i class="bi bi-three-dots-vertical"></i>
 														</button>
-													</form>
+														<ul class="dropdown-menu dropdown-menu-end shadow">
+															<li>
+																<a class="dropdown-item d-flex align-items-center" href="tasks/<?= esc($task['id']) ?>">
+																	<i class="bi bi-pencil-square me-2 text-secondary"></i> Bearbeiten
+																</a>
+															</li>
+															<li>
+																<hr class="dropdown-divider">
+															</li>
+															<li>
+																<form action="tasks/delete/<?= esc($task['id']) ?>" method="POST" class="d-inline delete-task-form">
+																	<button type="button" class="dropdown-item d-flex align-items-center text-danger delete-task-btn" data-task-id="<?= esc($task['id']) ?>">
+																		<i class="bi bi-trash3-fill me-2"></i> Löschen
+																	</button>
+																</form>
+															</li>
+														</ul>
+													</div>
 												</div>
 
+												<div class="mb-2 pe-4">
+													<h6 class="fw-bold mb-0 text-break"><?= esc($task['tasks']) ?></h6>
+												</div>
+
+												<div class="task-meta-list mb-3">
+													<div class="task-meta-item">
+														<span title="Art"><?= $task['taskartenicon'] ?></span>
+														<span class="text-muted small"><?= esc($task['notizen']) ?></span>
+													</div>
+
+													<div class="task-meta-item small mt-2 d-flex flex-wrap gap-3 justify-content-between">
+														<span>
+															<i class="bi bi-calendar3 me-1"></i>
+															<?= (new DateTime($task['erstelldatum']))->format('d. M') ?>
+														</span>
+
+														<?php if (!empty($task['erinnerungsdatum']) && !empty($task['erinnerung']) && $task['erinnerung'] > 0): ?>
+															<span class="<?= (strtotime($task['erinnerungsdatum']) < time()) ? 'text-danger fw-semibold' : '' ?>" title="Erinnerung">
+																<i class="bi bi-alarm me-1"></i>
+																<?= (new DateTime($task['erinnerungsdatum']))->format('d.m. H:i') ?>
+															</span>
+														<?php endif; ?>
+													</div>
+												</div>
+
+												<div class="d-flex justify-content-end mt-2">
+													<span class="badge rounded-pill <?= $task['erledigt'] ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary' ?>" style="font-size: 0.7rem;">
+														<?= $task['erledigt'] ? 'Erledigt' : 'Offen' ?>
+													</span>
+												</div>
 											</div>
 										<?php endforeach; ?>
 									</div>
