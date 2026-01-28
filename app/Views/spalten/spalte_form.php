@@ -42,7 +42,6 @@
 
 				<form method="POST" action="<?= base_url('public/spalten/save' . (isset($spalte['id']) ? '/' . $spalte['id'] : '')) ?>">
 					<?= csrf_field() ?>
-					<input type="hidden" name="boardsid" value="1">
 
 					<!-- Spalten-Bezeichnung -->
 					<div class="row mb-3">

@@ -65,6 +65,9 @@ class Tasks extends BaseController
 				'task' => $task,
 				'origin' => base_url('tasks'),
 			];
+			if (!empty($id)) $data['spalten'] = new SpaltenModel()->getSpaltenByBoard(new TasksModel()->getBoardByTask($id));
+			else $data['spalten'] = new SpaltenModel()->getSpaltenWithBoards();
+			$data['taskarten'] = new TaskartenModel()->getTaskarten();
 			$view = 'tasks/task_form';
 			return view($view, $data);
 		}
