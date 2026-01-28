@@ -116,4 +116,16 @@ class Tasks extends BaseController
 		return redirect()->to(base_url('tasks'))
 			->with('error', 'Keine Task-ID angegeben!');
 	}
+
+	public function postToggleDone($id)
+	{
+		$model = new TasksModel();
+		$task = $model->find($id);
+		if (empty($task)) {
+			return $this->response->setStatusCode(404)->setBody('Task nicht gefunden');
+		}
+		$newStatus = $task['erledigt'] ? 0 : 1;
+		$model->update($id, ['erledigt' => $newStatus]);
+		return redirect()->to(base_url('tasks'));
+	}
 }

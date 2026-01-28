@@ -252,9 +252,15 @@
 												</div>
 
 												<div class="d-flex justify-content-end mt-2">
-													<span class="badge rounded-pill <?= $task['erledigt'] ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary' ?>" style="font-size: 0.7rem;">
-														<?= $task['erledigt'] ? 'Erledigt' : 'Offen' ?>
-													</span>
+													<form action="tasks/toggle_done/<?= esc($task['id']) ?>" method="POST" class="d-inline toggle-done-form">
+														<button type="button"
+															class="badge rounded-pill <?= $task['erledigt'] ? 'bg-success-subtle text-success' : 'bg-secondary-subtle text-secondary' ?> toggle-done-btn"
+															style="font-size: 0.7rem; border: none;"
+															data-task-id="<?= esc($task['id']) ?>"
+															data-task-status="<?= $task['erledigt'] ?>">
+															<?= $task['erledigt'] ? 'Erledigt' : 'Offen' ?>
+														</button>
+													</form>
 												</div>
 											</div>
 										<?php endforeach; ?>
@@ -291,6 +297,25 @@
 		</div>
 	</div>
 
+	<!-- Toggle Done Modal (zentral, wird per JS befüllt) -->
+	<div class="modal fade" id="toggleDoneModal" tabindex="-1" aria-labelledby="toggleDoneModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="toggleDoneModalLabel">Status ändern</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="toggleDoneModalBody">
+					Möchten Sie den Status dieser Task wirklich ändern?
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-success" id="confirmToggleDoneBtn">Ja</button>
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<script>
 		let formToDelete = null;
 		document.querySelectorAll('.delete-task-btn').forEach(btn => {
@@ -309,7 +334,32 @@
 			const modal = bootstrap.Modal.getInstance(modalEl);
 			modal.hide();
 		});
+
+		// Toggle Done Modal Handling analog zu Delete
+		let formToToggleDone = null;
+		document.querySelectorAll('.toggle-done-btn').forEach(btn => {
+			btn.addEventListener('click', function(e) {
+				e.preventDefault();
+				formToToggleDone = this.closest('form');
+				const erledigt = this.getAttribute('data-task-status');
+				document.getElementById('toggleDoneModalBody').textContent = erledigt == '1' ?
+					'Möchten Sie diese Task wirklich als offen markieren?' :
+					'Möchten Sie diese Task wirklich als erledigt markieren?';
+				const modal = new bootstrap.Modal(document.getElementById('toggleDoneModal'));
+				modal.show();
+			});
+		});
+		document.getElementById('confirmToggleDoneBtn').addEventListener('click', function() {
+			if (formToToggleDone) {
+				formToToggleDone.submit();
+			}
+			const modalEl = document.getElementById('toggleDoneModal');
+			const modal = bootstrap.Modal.getInstance(modalEl);
+			modal.hide();
+		});
 	</script>
+
+
 
 </body>
 
