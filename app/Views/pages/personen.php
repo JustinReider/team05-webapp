@@ -18,7 +18,7 @@
 	<?= $this->include("templates/navbar.php"); ?>
 
 	<!-- INHALT -->
-	<div class="container mt-4 flex-fill">
+	<div class="container mt-3 flex-fill" style="max-width: 95%;">
 		<div class="table-responsive">
 			<table class="table table-striped ">
 				<thead>

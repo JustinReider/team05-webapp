@@ -25,7 +25,7 @@
 	<div class="container mt-4 flex-fill">
 		<div class="card">
 			<div class="card-header">
-				<h2 class="card-title">Spalte erstellen</h2>
+				<h2 class="card-title"><?= $title ?></h2>
 			</div>
 			<div class="card-body">
 
@@ -40,7 +40,7 @@
 				<?php endif; ?>
 
 
-				<form method="POST" action="<?= base_url('public/spalten/save') ?>">
+				<form method="POST" action="<?= base_url('public/spalten/save' . (isset($spalte['id']) ? '/' . $spalte['id'] : '')) ?>">
 					<?= csrf_field() ?>
 					<input type="hidden" name="boardsid" value="1">
 
@@ -48,7 +48,7 @@
 					<div class="row mb-3">
 						<label class="col-sm-2 col-form-label">Spalten-Bezeichnung</label>
 						<div class="col-sm-10">
-							<input type="text" class="form-control" name="spalte" placeholder="Bezeichnung für die Spalte" required>
+							<input type="text" class="form-control" name="spalte" placeholder="Bezeichnung für die Spalte" required value="<?= isset($spalte['spalte']) ? esc($spalte['spalte']) : '' ?>">
 						</div>
 					</div>
 
@@ -56,7 +56,7 @@
 					<div class="row mb-3">
 						<label class="col-sm-2 col-form-label">Spaltenbeschreibung</label>
 						<div class="col-sm-10">
-							<textarea class="form-control" name="spaltenbeschreibung" rows="4" required></textarea>
+							<textarea class="form-control" name="spaltenbeschreibung" rows="4" required><?= isset($spalte['spaltenbeschreibung']) ? esc($spalte['spaltenbeschreibung']) : '' ?></textarea>
 						</div>
 					</div>
 
@@ -64,7 +64,7 @@
 					<div class="row mb-3">
 						<label class="col-sm-2 col-form-label">Sortid</label>
 						<div class="col-sm-10">
-							<input type="number" class="form-control" name="sortid" placeholder="Sortid angeben" min="1" step="1" required>
+							<input type="number" class="form-control" name="sortid" placeholder="Sortid angeben" min="1" step="1" required value="<?= isset($spalte['sortid']) ? esc($spalte['sortid']) : '' ?>">
 						</div>
 					</div>
 
@@ -72,18 +72,20 @@
 					<div class="row mb-4">
 						<label class="col-sm-2 col-form-label">Board auswählen</label>
 						<div class="col-sm-10">
-							<select class="form-select" name="boardsid">
-								<option value="1">Allgemeine Todos</option>
-								<option value="2">Projekt A</option>
-								<option value="3">Projekt B</option>
-								<option value="4">Projekt C</option>
+							<select class="form-select" name="boardsid" required>
+								<option value="">Board auswählen</option>
+								<?php foreach ($boards as $board): ?>
+									<option value="<?= esc($board['id']) ?>" <?= (isset($spalte['boardsid']) && $spalte['boardsid'] == $board['id']) ? 'selected' : '' ?>>
+										<?= esc($board['board']) ?>
+									</option>
+								<?php endforeach; ?>
 							</select>
 						</div>
 					</div>
 
 					<div class="d-flex gap-2">
 						<button type="submit" class="btn btn-success">Speichern</button>
-						<a href="<?= base_url('spalten') ?>" class="btn btn-secondary">Abbrechen</a>
+						<a href="<?= isset($origin) ? $origin : (isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('spalten')) ?>" class="btn btn-secondary">Abbrechen</a>
 					</div>
 				</form>
 			</div>

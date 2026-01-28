@@ -71,7 +71,7 @@
 					</li>
 
 					<li class="nav-item mx-1">
-						<a class="nav-link" href="#" title="Boards">
+						<a class="nav-link" href="<?= base_url('boards') ?>" title="Boards">
 							<i class="bi bi-kanban-fill icon-main-menu"></i>
 							<span class="me-2 me-md-0 d-inline-flex d-sm-none d-md-inline-flex">
 								Boards

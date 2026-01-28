@@ -34,8 +34,37 @@ class TasksModel extends Model
 		$spalten = $this->queryBuilder($sql, [$board]);
 		$result = [];
 		foreach ($spalten as $spalte) {
-			$sql = "SELECT * FROM tasks WHERE spaltenid = ? ORDER BY sortid ASC";
+			$sql = "
+				SELECT
+				    t.*,
+				    ta.taskartenicon,
+				    COALESCE(
+				        JSON_ARRAYAGG(
+				            CASE
+				                WHEN p.id IS NOT NULL THEN JSON_OBJECT(
+				                    'id', p.id,
+				                    'vorname', p.vorname,
+				                    'name', p.name,
+				                    'email', p.email
+				                )
+				            END
+				        ),
+				        JSON_ARRAY()
+				    ) AS personen
+				FROM tasks t
+				JOIN taskarten ta ON ta.id = t.taskartenid
+				LEFT JOIN personen_tasks pt ON pt.tasksid = t.id
+				LEFT JOIN personen p ON p.id = pt.personenid
+				WHERE t.spaltenid = ?
+				GROUP BY t.id
+				ORDER BY t.sortid ASC;
+			";
 			$tasks = $this->queryBuilder($sql, [$spalte['id']]);
+			foreach ($tasks as &$task) {
+				$task['personen'] = json_decode($task['personen'], true) ?? [];
+			}
+			unset($task);
+
 			$result[$spalte['id']] = [
 				'spalte' => $spalte['spalte'],
 				'spaltenbeschreibung' => $spalte['spaltenbeschreibung'],
@@ -48,5 +77,13 @@ class TasksModel extends Model
 	public function getTask($id): array
 	{
 		return $this->find($id);
+	}
+
+	public function getBoardByTask($id)
+	{
+		return $this->select('s.boardsid')
+			->join('spalten s', 'tasks.spaltenid = s.id')
+			->where('tasks.id', $id)
+			->first();
 	}
 }

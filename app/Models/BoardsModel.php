@@ -18,6 +18,10 @@ class BoardsModel extends Model
 	{
 		return $this->findAll();
 	}
+	public function getBoard($id): array
+	{
+		return $this->find($id);
+	}
 	public function getBoardName($board): array
 	{
 		return $this->where('id', $board)->select('board')->first();
