@@ -121,6 +121,18 @@ class Validation extends BaseConfig
 				'valid_date' => 'Bitte ein gültiges Datum angeben.'
 			]
 		],
+		'personenids' => [
+			'label'  => 'Verantwortliche',
+			'rules'  => 'permit_empty',
+		],
+		'personenids.*' => [
+			'label'  => 'Person',
+			'rules'  => 'permit_empty|integer|is_not_unique[personen.id]',
+			'errors' => [
+				'integer'       => 'Eine Personen-ID muss eine Zahl sein.',
+				'is_not_unique' => 'Die ausgewählte Person existiert nicht.'
+			]
+		],
 	];
 
 	public array $boardsbearbeiten = [

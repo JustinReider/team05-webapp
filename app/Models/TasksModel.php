@@ -86,4 +86,29 @@ class TasksModel extends Model
 			->where('tasks.id', $id)
 			->first();
 	}
+
+	public function updateTaskWithPeople($id, $data, $personenids)
+	{
+		$db = $this->db;
+		$db->transStart();
+
+		$this->update($id, $data);
+
+		$builder = $db->table('personen_tasks');
+		$builder->where('tasksid', $id)->delete();
+
+		if (!empty($personenids)) {
+			$insertData = [];
+			foreach ($personenids as $pid) {
+				$insertData[] = [
+					'tasksid'    => (int)$id,
+					'personenid' => (int)$pid
+				];
+			}
+			$builder->insertBatch($insertData);
+		}
+
+		$db->transComplete();
+		return $db->transStatus();
+	}
 }

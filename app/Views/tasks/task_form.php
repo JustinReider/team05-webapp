@@ -81,24 +81,24 @@
 						</div>
 					</div>
 
-                    <!-- Verantwortliche auswählen  -->
-                    <div class="row mb-4">
-                        <label class="col-sm-2 col-form-label">Verantwortliche</label>
-                        <div class="col-sm-10">
-                            <select class="form-select" name="personenids[]" multiple required>
-                                <?php foreach ($personen as $person): ?>
-                                    <?php
-                                    $pid = $person['id'];
-                                    $isSelected = !empty($task_personen_ids) && in_array($pid, $task_personen_ids, true);
-                                    ?>
-                                    <option value="<?= esc($pid) ?>" <?= $isSelected ? 'selected' : '' ?>>
-                                        <?= esc(trim(($person['vorname'] ?? '') . ' ' . ($person['nachname'] ?? ''))) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                            <div class="form-text">Mehrere Personen mit Strg / Cmd auswählen.</div>
-                        </div>
-                    </div>
+					<!-- Verantwortliche auswählen  -->
+					<div class="row mb-4">
+						<label class="col-sm-2 col-form-label">Verantwortliche</label>
+						<div class="col-sm-10">
+							<select class="form-select" name="personenids[]" multiple>
+								<?php foreach ($personen as $person): ?>
+									<?php
+									$pid = $person['id'];
+									$isSelected = !empty($task_personen_ids) && in_array($pid, $task_personen_ids, true);
+									?>
+									<option value="<?= esc($pid) ?>" <?= $isSelected ? 'selected' : '' ?>>
+										<?= esc(trim(($person['vorname'] ?? '') . ' ' . ($person['nachname'] ?? ''))) ?>
+									</option>
+								<?php endforeach; ?>
+							</select>
+							<div class="form-text">Mehrere Personen mit Strg / Cmd auswählen.</div>
+						</div>
+					</div>
 
 					<!-- Erinnerungsdatum -->
 					<div class="row mb-3">

@@ -7,7 +7,6 @@ use App\Models\BoardsModel;
 use App\Models\SpaltenModel;
 use App\Models\TaskartenModel;
 use App\Models\PersonenModel;
-use App\Models\PersonenTasksModel;
 
 class Tasks extends BaseController
 {
@@ -36,8 +35,8 @@ class Tasks extends BaseController
 		$data['spalten'] = new SpaltenModel()->getSpaltenWithBoards();
 		$data['taskarten'] = new TaskartenModel()->getTaskarten();
 
-        $data['personen'] = (new PersonenModel())->getData();
-        $data['task_personen_ids'] = [];
+		$data['personen'] = (new PersonenModel())->getData();
+		$data['task_personen_ids'] = [];
 
 		return view('tasks/task_form', $data);
 	}
@@ -56,8 +55,8 @@ class Tasks extends BaseController
 		$data['spalten'] = new SpaltenModel()->getSpaltenByBoard($board);
 		$data['taskarten'] = new TaskartenModel()->getTaskarten();
 
-        $data['personen'] = (new PersonenModel())->getData();
-        $data['task_personen_ids'] = [];
+		$data['personen'] = (new PersonenModel())->getData();
+		$data['task_personen_ids'] = [];
 
 		return view('tasks/task_form', $data);
 	}
@@ -66,70 +65,21 @@ class Tasks extends BaseController
 	{
 		$validation = \Config\Services::validation();
 
-		if (! $validation->run($_POST, 'tasksbearbeiten')) {
-			$task = $this->request->getPost();
-			if (!empty($id)) $task['id'] = $id;
-			$data = [
-				'validation' => $validation,
-				'title' => empty($id) ? 'Neue Task erstellen' : 'Task bearbeiten',
-				'task' => $task,
-				'origin' => base_url('tasks'),
-			];
-			if (!empty($id)) $data['spalten'] = new SpaltenModel()->getSpaltenByBoard(new TasksModel()->getBoardByTask($id));
-			else $data['spalten'] = new SpaltenModel()->getSpaltenWithBoards();
-			$data['taskarten'] = new TaskartenModel()->getTaskarten();
-			$view = 'tasks/task_form';
-			return view($view, $data);
+		if (!$validation->run($_POST, 'tasksbearbeiten')) {
+			return $this->renderForm($id, $validation);
 		}
 
+		$saveData = $this->getTaskDataFromPost();
+		$personenids = $this->request->getPost('personenids') ?? [];
 		$model = new TasksModel();
-		$saveData = [
-			'tasks'            => $this->request->getPost('tasks'),
-			'taskartenid'      => $this->request->getPost('taskartenid'),
-			'spaltenid'        => $this->request->getPost('spaltenid'),
-			'sortid'           => $this->request->getPost('sortid'),
-			'erinnerungsdatum' => $this->request->getPost('erinnerungsdatum') ?: null,
-			'erinnerung'       => $this->request->getPost('erinnerung') ? 1 : 0,
-			'notizen'            => $this->request->getPost('notizen'),
-			'erledigt'         => 0,
-			'geloescht'        => 0
-		];
 
-        if (empty($id)) {
-			if (!$model->insert($saveData)) { $id = $model->getInsertID();
-                $personenids = $this->request->getPost('personenids') ?? [];
-                $personenTasksModel = new PersonenTasksModel();
-
-                foreach ($personenids as $pid) {
-                    $personenTasksModel->insert([
-                        'taskid' => $id,
-                        'personenid' => $pid
-                    ]);
-                }
-
-                return $this->response->setStatusCode(400)->setBody('Insert failed: ' . print_r($model->errors(), true));
-			}
-			return redirect()->to(base_url('tasks'));
-		} else {
-
-			if ($model->update($id, $saveData)) { $personenids = $this->request->getPost('personenids') ?? [];
-                $personenTasksModel = new PersonenTasksModel();
-                $personenTasksModel->where('taskid', $id)->delete();
-
-                foreach ($personenids as $pid) {
-                    $personenTasksModel->insert([
-                        'taskid' => $id,
-                        'personenid' => $pid
-                    ]);
-                }
-				return redirect()->to(base_url('tasks'));
-			} else {
-				return redirect()->back()
-					->withInput()->with('error', 'Fehler beim Aktualisieren der Task!');
-			}
+		if ($this->executeSave($model, $id, $saveData, $personenids)) {
+			return redirect()->to(base_url('tasks'))->with('success', 'Gespeichert.');
 		}
 
-    }
+		return redirect()->back()->withInput()->with('error', 'Fehler beim Speichern.');
+	}
+
 
 	public function postDelete($id)
 	{
@@ -159,5 +109,65 @@ class Tasks extends BaseController
 		$newStatus = $task['erledigt'] ? 0 : 1;
 		$model->update($id, ['erledigt' => $newStatus]);
 		return redirect()->to(base_url('tasks'));
+	}
+
+	private function renderForm($id, $validation)
+	{
+		$tasksModel = new TasksModel();
+		$task = $this->request->getPost();
+		if (!empty($id)) $task['id'] = $id;
+
+		$task_personen_ids = $this->request->getPost('personenids') ?? [];
+
+		if (empty($this->request->getPost()) && !empty($id)) {
+			$personenTasksModel = new \App\Models\PersonenTasksModel();
+			$task_personen_ids = array_column(
+				$personenTasksModel->where('tasksid', $id)->findAll(),
+				'personenid'
+			);
+		}
+
+		$data = [
+			'validation'        => $validation,
+			'title'             => empty($id) ? 'Neue Task erstellen' : 'Task bearbeiten',
+			'task'              => $task,
+			'task_personen_ids' => $task_personen_ids,
+			'personen'          => (new \App\Models\PersonenModel())->getData(),
+			'taskarten'         => (new TaskartenModel())->getTaskarten(),
+			'origin'            => base_url('tasks'),
+			'spalten'           => empty($id)
+				? (new SpaltenModel())->getSpaltenWithBoards()
+				: (new SpaltenModel())->getSpaltenByBoard($tasksModel->getBoardByTask($id))
+		];
+
+		return view('tasks/task_form', $data);
+	}
+
+	private function getTaskDataFromPost()
+	{
+		return [
+			'tasks'            => $this->request->getPost('tasks'),
+			'taskartenid'      => $this->request->getPost('taskartenid'),
+			'spaltenid'        => $this->request->getPost('spaltenid'),
+			'sortid'           => $this->request->getPost('sortid'),
+			'erinnerungsdatum' => $this->request->getPost('erinnerungsdatum') ?: null,
+			'erinnerung'       => $this->request->getPost('erinnerung') ? 1 : 0,
+			'notizen'          => $this->request->getPost('notizen'),
+			'erledigt'         => 0,
+			'geloescht'        => 0
+		];
+	}
+
+	private function executeSave($model, $id, $saveData, $personenids)
+	{
+		if (empty($id)) {
+			if ($model->insert($saveData)) {
+				$newId = $model->getInsertID();
+				return $model->updateTaskWithPeople($newId, $saveData, $personenids);
+			}
+			return false;
+		}
+
+		return $model->updateTaskWithPeople($id, $saveData, $personenids);
 	}
 }
