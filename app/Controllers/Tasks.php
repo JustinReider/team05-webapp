@@ -153,7 +153,6 @@ class Tasks extends BaseController
 			'erinnerungsdatum' => $this->request->getPost('erinnerungsdatum') ?: null,
 			'erinnerung'       => $this->request->getPost('erinnerung') ? 1 : 0,
 			'notizen'          => $this->request->getPost('notizen'),
-			'erledigt'         => 0,
 			'geloescht'        => 0
 		];
 	}
