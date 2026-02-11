@@ -29,3 +29,4 @@ $routes->post('/tasks/save', 'Tasks::postSave');
 $routes->post('/tasks/save/(:num)', 'Tasks::postSave/$1');
 $routes->post('/tasks/delete/(:num)', 'Tasks::postDelete/$1');
 $routes->post('/tasks/toggle_done/(:num)', 'Tasks::postToggleDone/$1');
+$routes->post('/tasks/updatePosition', 'Tasks::postUpdatePosition');
