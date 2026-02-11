@@ -25,3 +25,44 @@
 a:hover {
     color: lightblue;
 }
+
+/* === DRAG & DROP STYLES === */
+.gu-mirror {
+    position: fixed !important;
+    margin: 0 !important;
+    z-index: 9999 !important;
+    opacity: 0.8;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
+    filter: alpha(opacity=80);
+}
+.gu-hide {
+    display: none !important;
+}
+.gu-unselectable {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+}
+.gu-transit {
+    opacity: 0.2;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+    filter: alpha(opacity=20);
+}
+
+
+.drag-over {
+    background-color: rgba(0, 123, 255, 0.05);
+    border: 2px dashed #007bff !important;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+
+.task-card {
+    cursor: grab;
+}
+
+.task-card:active {
+    cursor: grabbing;
+}

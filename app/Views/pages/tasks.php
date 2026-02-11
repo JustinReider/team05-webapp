@@ -4,10 +4,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="base-url" content="<?= base_url('/') ?>">
 	<title>Tasks</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 	<link rel="stylesheet" href="<?= base_url('style.css') ?>">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+
 	<style>
 		/* --- 1. TASK CARD DESIGN --- */
 		.task-card {
@@ -17,7 +20,13 @@
 			border-left: 4px solid transparent !important;
 		}
 
-		/* Status-Farben am linken Rand */
+        .task-card:active {
+            cursor: grabbing;
+        }
+
+
+
+        /* Status-Farben am linken Rand */
 		.task-card.border-done {
 			border-left-color: #198754 !important;
 		}
@@ -155,7 +164,9 @@
 					<h2>Tasks</h2>
 				</div>
 			</div>
-			<div class="card-body">
+
+            <div class="card-body">
+
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<a href="tasks/new" class="text-decoration-none">
 						<button type="button" class="btn btn-primary d-inline-flex align-items-center shadow-sm">
@@ -197,9 +208,14 @@
 											<i class="bi bi-pencil-fill"></i>
 										</a>
 									</div>
-									<div class="card-body">
-										<?php foreach ($spalteData['tasks'] as $task): ?>
-											<div class="task-card shadow-sm mb-3 rounded-4 p-3 show-on-hover-parent position-relative <?= $task['erledigt'] ? 'border-done' : 'border-pending' ?>">
+                                    <!-- Container fuer Dragula -->
+                                    <div class="card-body" data-spalten-id="<?= esc($spaltenId) ?>">
+                                        <?php foreach ($spalteData['tasks'] as $task): ?>
+
+
+                                            <!-- DRAG AND DROP CLASS -->
+                                            <div class="task-card shadow-sm mb-3 rounded-4 p-3 show-on-hover-parent position-relative <?= $task['erledigt'] ? 'border-done' : 'border-pending' ?>"
+                                                 data-task-id="<?= esc($task['id']) ?>">
 
 												<div class="task-menu-container">
 													<div class="dropdown">
@@ -376,6 +392,9 @@
 	</script>
 
 
+    <!-- DRAG AND DROP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js"></script>
+    <script src="<?= base_url('js/drag-and-drop.js') ?>"></script>
 
 </body>
 
