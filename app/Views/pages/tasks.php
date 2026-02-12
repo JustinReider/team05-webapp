@@ -4,12 +4,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="base-url" content="<?= base_url('/') ?>">
+	<meta name="base-url" content="<?= base_url('/') ?>">
 	<title>Tasks</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 	<link rel="stylesheet" href="<?= base_url('style.css') ?>">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-
+	<link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
 
 	<style>
 		/* --- 1. TASK CARD DESIGN --- */
@@ -20,13 +20,13 @@
 			border-left: 4px solid transparent !important;
 		}
 
-        .task-card:active {
-            cursor: grabbing;
-        }
+		.task-card:active {
+			cursor: grabbing;
+		}
 
 
 
-        /* Status-Farben am linken Rand */
+		/* Status-Farben am linken Rand */
 		.task-card.border-done {
 			border-left-color: #198754 !important;
 		}
@@ -165,7 +165,7 @@
 				</div>
 			</div>
 
-            <div class="card-body">
+			<div class="card-body">
 
 				<div class="d-flex justify-content-between align-items-center mb-3">
 					<a href="tasks/new" class="text-decoration-none">
@@ -208,14 +208,14 @@
 											<i class="bi bi-pencil-fill"></i>
 										</a>
 									</div>
-                                    <!-- Container fuer Dragula -->
-                                    <div class="card-body" data-spalten-id="<?= esc($spaltenId) ?>">
-                                        <?php foreach ($spalteData['tasks'] as $task): ?>
+									<!-- Container fuer Dragula -->
+									<div class="card-body" data-spalten-id="<?= esc($spaltenId) ?>">
+										<?php foreach ($spalteData['tasks'] as $task): ?>
 
 
-                                            <!-- DRAG AND DROP CLASS -->
-                                            <div class="task-card shadow-sm mb-3 rounded-4 p-3 show-on-hover-parent position-relative <?= $task['erledigt'] ? 'border-done' : 'border-pending' ?>"
-                                                 data-task-id="<?= esc($task['id']) ?>">
+											<!-- DRAG AND DROP CLASS -->
+											<div class="task-card shadow-sm mb-3 rounded-4 p-3 show-on-hover-parent position-relative <?= $task['erledigt'] ? 'border-done' : 'border-pending' ?>"
+												data-task-id="<?= esc($task['id']) ?>">
 
 												<div class="task-menu-container">
 													<div class="dropdown">
@@ -223,6 +223,18 @@
 															<i class="bi bi-three-dots-vertical"></i>
 														</button>
 														<ul class="dropdown-menu dropdown-menu-end shadow">
+															<li>
+																<form action="tasks/toggle_done/<?= esc($task['id']) ?>" method="POST">
+																	<button type="submit" class="dropdown-item d-flex align-items-center">
+																		<i class="me-2 <?= $task['erledigt'] ? 'bi bi-arrow-clockwise' : 'bi bi-check-square-fill' ?>"></i>Als <?= $task['erledigt'] ? 'Offen' : 'Erledigt' ?> kennzeichnen
+																	</button>
+																</form>
+															</li>
+															<li>
+																<hr class="dropdown-divider">
+															</li>
+															<li>
+
 															<li>
 																<a class="dropdown-item d-flex align-items-center" href="tasks/<?= esc($task['id']) ?>">
 																	<i class="bi bi-pencil-square me-2 text-secondary"></i> Bearbeiten
@@ -268,18 +280,19 @@
 												</div>
 
 
-                                                <div class="task-meta-item small mt-2 d-flex flex-wrap gap-3 justify-content-between">
-                                                    <span>
-                                                        <i class="bi bi-person me-1 text-secondary"></i>
-                                                             <?php if (!empty($task['personen'])): ?>
-                                                              <?= esc(implode(', ', array_map(
-                                                               fn ($p) => trim(($p['vorname'] ?? '') . ' ' . ($p['nachname'] ?? '')),
-                                                                $task['personen']))) ?>
-                                                                  <?php else: ?>
-                                                                     Keine Person zugeordnet
-                                                             <?php endif; ?>
-                                                        </span>
-                                                </div>
+												<div class="task-meta-item small mt-2 d-flex flex-wrap gap-3 justify-content-between">
+													<span>
+														<i class="bi bi-person me-1 text-secondary"></i>
+														<?php if (!empty($task['personen'])): ?>
+															<?= esc(implode(', ', array_map(
+																fn($p) => trim(($p['vorname'] ?? '') . ' ' . ($p['nachname'] ?? '')),
+																$task['personen']
+															))) ?>
+														<?php else: ?>
+															Keine Person zugeordnet
+														<?php endif; ?>
+													</span>
+												</div>
 
 
 
@@ -392,9 +405,9 @@
 	</script>
 
 
-    <!-- DRAG AND DROP -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js"></script>
-    <script src="<?= base_url('js/drag-and-drop.js') ?>"></script>
+	<!-- DRAG AND DROP -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js"></script>
+	<script src="<?= base_url('js/drag-and-drop.js') ?>"></script>
 
 </body>
 
