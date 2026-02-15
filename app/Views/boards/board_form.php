@@ -29,8 +29,6 @@
 			</div>
 			<div class="card-body">
 
-
-
 				<?php if (isset($error)): ?>
 					<div class="alert alert-danger">
 						<?php foreach ($error as $err): ?>
@@ -39,24 +37,24 @@
 					</div>
 				<?php endif; ?>
 
-
 				<form method="POST" action="<?= base_url('public/boards/save' . (isset($board['id']) ? '/' . $board['id'] : '')) ?>">
 					<?= csrf_field() ?>
-					<input type="hidden" name="boardsid" value="1">
 
 					<!-- Board-Bezeichnung -->
-					<div class="row mb-3">
-						<label class="col-sm-2 col-form-label">Board-Bezeichnung</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="board" placeholder="Bezeichnung für das Board" required value="<?= isset($board['board']) ? esc($board['board']) : '' ?>">
-						</div>
-					</div>
+					<?= view('templates/form_components/_form_input', [
+						'label' => 'Board-Bezeichnung',
+						'type' => 'text',
+						'name' => 'board',
+						'placeholder' => 'Bezeichnung für das Board',
+						'value' => $board['board'] ?? '',
+					]) ?>
 
+					<?= view('templates/form_components/_form_buttons', [
+						'submitLabel' => 'Speichern',
+						'cancelUrl' => isset($origin) ? $origin : (isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('boards')),
+						'cancelLabel' => 'Abbrechen'
+					]) ?>
 
-					<div class="d-flex gap-2">
-						<button type="submit" class="btn btn-success">Speichern</button>
-						<a href="<?= isset($origin) ? $origin : (isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('boards')) ?>" class="btn btn-secondary">Abbrechen</a>
-					</div>
 				</form>
 			</div>
 		</div>

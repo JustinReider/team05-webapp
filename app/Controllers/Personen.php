@@ -10,6 +10,6 @@ class Personen extends BaseController
 	{
 		$model = new PersonenModel();
 		$data['personen'] = $model->getData();
-		return view('pages/personen', $data);
+		return view('personen/personen', $data);
 	}
 }

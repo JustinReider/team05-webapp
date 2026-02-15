@@ -9,6 +9,7 @@
 		integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<link rel="stylesheet" href="<?= base_url('style.css') ?>">
+	<link rel="stylesheet" href="<?= base_url('css/task_form.css') ?>">
 </head>
 
 
@@ -36,56 +37,46 @@
 				<form method="POST" action="<?= base_url('public/tasks/save' . (isset($task['id']) ? '/' . $task['id'] : '')) ?>">
 					<?= csrf_field() ?>
 					<!-- Task-Bezeichnung -->
-					<div class="row mb-3">
-						<label class="col-sm-2 col-form-label">Tasks</label>
-						<div class="col-sm-10">
-							<input type="text" class="form-control" name="tasks" placeholder="Task-Bezeichnung eingeben" required value="<?= esc(($task['tasks']) ?? '') ?>">
-						</div>
-					</div>
+					<?= view('templates/form_components/_form_input', [
+						'label' => 'Tasks',
+						'type' => 'text',
+						'name' => 'tasks',
+						'placeholder' => 'Task-Bezeichnung eingeben',
+						'value' => $task['tasks'] ?? '',
+
+					]) ?>
 					<!-- Taskbeschreibung -->
-					<div class="row mb-3">
-						<label class="col-sm-2 col-form-label">Notizen</label>
-						<div class="col-sm-10">
-							<textarea class="form-control" name="notizen" rows="4" placeholder="Notizen zum Task" required><?= esc($task['notizen'] ?? '') ?></textarea>
-						</div>
-					</div>
+					<?= view('templates/form_components/_form_textarea', [
+						'label' => 'Notizen',
+						'name' => 'notizen',
+						'value' => $task['notizen'] ?? '',
+						'placeholder' => 'Notizen zum Task',
+					]) ?>
 					<!-- Taskart -->
-					<div class="row mb-4">
-						<label class="col-sm-2 col-form-label">Taskart auswählen</label>
-						<div class="col-sm-10">
-							<select class="form-select" name="taskartenid" required>
-								<option value="">Taskart auswählen</option>
-								<?php foreach (
-									$taskarten as $taskart
-								): ?>
-									<option value="<?= esc($taskart['id']) ?>" <?= (isset($task['taskartenid']) && $task['taskartenid'] == $taskart['id']) ? 'selected' : '' ?>>
-										<?= esc($taskart['taskart'] . ' ' . $taskart['taskartenicon']) ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-					</div>
+					<?= view('templates/form_components/_form_select', [
+						'label' => 'Taskart auswählen',
+						'name' => 'taskartenid',
+						'options' => array_map(fn($t) => ['value' => $t['id'], 'label' => $t['taskart'] . ' ' . $t['taskartenicon']], $taskarten),
+						'selected' => $task['taskartenid'] ?? '',
+						'placeholder' => 'Taskart auswählen',
+					]) ?>
 					<!-- Sortid -->
-					<div class="row mb-3">
-						<label class="col-sm-2 col-form-label">Sortid</label>
-						<div class="col-sm-10">
-							<input type="number" class="form-control" name="sortid" placeholder="Sortierreihenfolge angeben" min="1" step="1" required value="<?= esc($task['sortid'] ?? '') ?>">
-						</div>
-					</div>
+					<?= view('templates/form_components/_form_input', [
+						'label' => 'Sortid',
+						'type' => 'number',
+						'name' => 'sortid',
+						'placeholder' => 'Sortierreihenfolge angeben',
+						'value' => $task['sortid'] ?? '',
+					]) ?>
 					<!-- Spalte auswählen -->
-					<div class="row mb-4">
-						<label class="col-sm-2 col-form-label">Spalte auswählen</label>
-						<div class="col-sm-10">
-							<select class="form-select" name="spaltenid" required>
-								<option value="">Spalte auswählen</option>
-								<?php foreach ($spalten as $spalte): ?>
-									<option value="<?= esc($spalte['id']) ?>" <?= (isset($task['spaltenid']) && $task['spaltenid'] == $spalte['id']) ? 'selected' : '' ?>>
-										<?= esc($spalte['spalte']) ?>
-									</option>
-								<?php endforeach; ?>
-							</select>
-						</div>
-					</div>
+					<?= view('templates/form_components/_form_select', [
+						'label' => 'Spalte auswählen',
+						'name' => 'spaltenid',
+						'options' => array_map(fn($s) => ['value' => $s['id'], 'label' => $s['spalte']], $spalten),
+						'selected' => $task['spaltenid'] ?? '',
+						'placeholder' => 'Spalte auswählen',
+					]) ?>
+
 
 					<!-- Verantwortliche auswählen  -->
 					<div class="row mb-4">
@@ -146,217 +137,25 @@
 						</div>
 					</div>
 
-					<style>
-						.person-badge-enter {
-							animation: badgeFadeIn 0.2s ease;
-						}
-
-						@keyframes badgeFadeIn {
-							from {
-								opacity: 0;
-								transform: scale(0.9);
-							}
-
-							to {
-								opacity: 1;
-								transform: scale(1);
-							}
-						}
-
-						.person-item:hover {
-							background-color: var(--bs-tertiary-bg);
-						}
-
-						.person-item.selected {
-							background-color: var(--bs-primary-bg-subtle);
-							border-left: 3px solid var(--bs-primary);
-						}
-					</style>
-
-					<script>
-						document.addEventListener('DOMContentLoaded', function() {
-							const originalSelect = document.getElementById('personenids-original');
-							const searchInput = document.getElementById('person-search');
-							const personList = document.getElementById('person-list');
-							const selectedPersons = document.getElementById('selected-persons');
-							const selectionCount = document.getElementById('selection-count');
-							const resultCount = document.getElementById('result-count');
-							const dropdownBtn = document.getElementById('personDropdownBtn');
-							const dropdownMenu = document.querySelector('#personDropdownBtn + .dropdown-menu');
-
-							let persons = [];
-							let selectedIds = new Set();
-
-							function loadPersons() {
-								persons = Array.from(originalSelect.options).map(option => ({
-									id: option.value,
-									name: option.text.trim(),
-									selected: option.selected
-								}));
-
-								persons.forEach(person => {
-									if (person.selected) {
-										selectedIds.add(person.id);
-									}
-								});
-
-								console.log('Geladene Personen:', persons.length);
-								console.log('Vorausgewählte Personen:', selectedIds.size);
-							}
-
-							function renderDropdown(filter = '') {
-								const filtered = persons.filter(p =>
-									p.name.toLowerCase().includes(filter.toLowerCase())
-								);
-
-								resultCount.textContent = `${filtered.length} ${filtered.length === 1 ? 'Person' : 'Personen'}`;
-
-								if (filtered.length === 0) {
-									personList.innerHTML = `
-					<div class="text-center py-4 text-muted">
-						<div class="mb-2">🔍</div>
-						<small>Keine Personen gefunden</small>
-					</div>
-				`;
-									return;
-								}
-
-								personList.innerHTML = filtered.map(person => `
-				<div class="person-item px-3 py-2 border-bottom cursor-pointer ${selectedIds.has(person.id) ? 'selected' : ''}" 
-					 data-id="${person.id}"
-					 style="cursor: pointer;">
-					<div class="d-flex justify-content-between align-items-center">
-						<span>
-							👤 ${person.name}
-						</span>
-						${selectedIds.has(person.id) ? '<span class="badge bg-primary">✓</span>' : ''}
-					</div>
-				</div>
-			`).join('');
-
-								personList.querySelectorAll('.person-item').forEach(item => {
-									item.addEventListener('click', (e) => {
-										e.preventDefault();
-										e.stopPropagation();
-										togglePerson(item.dataset.id);
-									});
-								});
-							}
-
-							function togglePerson(personId) {
-								if (selectedIds.has(personId)) {
-									removePerson(personId);
-								} else {
-									addPerson(personId);
-								}
-							}
-
-							function addPerson(personId) {
-								const person = persons.find(p => p.id === personId);
-								if (!person) return;
-
-								selectedIds.add(personId);
-								updateOriginalSelect();
-								renderSelectedChips();
-								renderDropdown(searchInput.value);
-								updateCount();
-							}
-
-							function removePerson(personId) {
-								selectedIds.delete(personId);
-								updateOriginalSelect();
-								renderSelectedChips();
-								renderDropdown(searchInput.value);
-								updateCount();
-							}
-
-							function renderSelectedChips() {
-								const selected = persons.filter(p => selectedIds.has(p.id));
-
-								if (selected.length === 0) {
-									selectedPersons.innerHTML = '';
-									return;
-								}
-
-								selectedPersons.innerHTML = selected.map(person => `
-				<span class="badge bg-primary d-inline-flex align-items-center gap-2 py-2 px-3 person-badge-enter" 
-					  data-id="${person.id}" style="font-size: 0.85rem;">
-					👤 ${person.name}
-					<button type="button" 
-							class="btn-close btn-close-white" 
-							style="font-size: 0.65rem; opacity: 0.8;"
-							data-id="${person.id}" 
-							aria-label="Entfernen"></button>
-				</span>
-			`).join('');
-
-								selectedPersons.querySelectorAll('.btn-close').forEach(btn => {
-									btn.addEventListener('click', (e) => {
-										e.stopPropagation();
-										removePerson(btn.dataset.id);
-									});
-								});
-							}
-
-							function updateOriginalSelect() {
-								Array.from(originalSelect.options).forEach(option => {
-									option.selected = selectedIds.has(option.value);
-								});
-							}
-
-							function updateCount() {
-								selectionCount.textContent = selectedIds.size;
-							}
-
-							searchInput.addEventListener('input', (e) => {
-								renderDropdown(e.target.value);
-							});
-
-							dropdownBtn.addEventListener('shown.bs.dropdown', function() {
-								searchInput.value = '';
-								renderDropdown();
-								setTimeout(() => searchInput.focus(), 100);
-
-								const btnWidth = dropdownBtn.offsetWidth;
-								dropdownMenu.style.width = btnWidth + 'px';
-							});
-
-							searchInput.addEventListener('click', (e) => {
-								e.stopPropagation();
-							});
-
-							dropdownMenu.addEventListener('click', (e) => {
-								if (!e.target.closest('.person-item')) {
-									e.stopPropagation();
-								}
-							});
-
-							loadPersons();
-							renderSelectedChips();
-							renderDropdown();
-							updateCount();
-						});
-					</script>
-
 					<!-- Erinnerungsdatum -->
-					<div class="row mb-3">
-						<label class="col-sm-2 col-form-label">Erinnerungsdatum</label>
-						<div class="col-sm-10">
-							<input type="date" class="form-control" name="erinnerungsdatum" value="<?= esc($task['erinnerungsdatum'] ?? false ? date('Y-m-d', strtotime($task['erinnerungsdatum'])) : '') ?>">
-						</div>
-					</div>
+					<?= view('templates/form_components/_form_date', [
+						'label' => 'Erinnerungsdatum',
+						'name' => 'erinnerungsdatum',
+						'value' => isset($task['erinnerungsdatum']) && $task['erinnerungsdatum'] ? date('Y-m-d', strtotime($task['erinnerungsdatum'])) : ''
+					]) ?>
 					<!-- Erinnerung -->
-					<div class="row mb-3">
-						<label class="col-sm-2 col-form-label">Erinnerung</label>
-						<div class="col-sm-10 d-flex align-items-center">
-							<input type="checkbox" class="form-check-input me-2" name="erinnerung" <?= !empty($task['erinnerung'] ?? false) ? 'checked' : '' ?>>
-						</div>
-					</div>
+					<?= view('templates/form_components/_form_checkbox', [
+						'label' => 'Erinnerung',
+						'name' => 'erinnerung',
+						'checked' => !empty($task['erinnerung'] ?? false)
+					]) ?>
 					<!-- Buttons -->
-					<div class="d-flex gap-2">
-						<button type="submit" class="btn btn-success">Aktualisieren</button>
-						<a href="<?= isset($origin) ? $origin : (isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('tasks')) ?>" class="btn btn-secondary">Abbrechen</a>
-					</div>
+					<?= view('templates/form_components/_form_buttons', [
+						'submitLabel' => 'Aktualisieren',
+						'cancelUrl' => isset($origin) ? $origin : (isset($_SERVER['HTTP_REFERER']) ? esc($_SERVER['HTTP_REFERER']) : base_url('tasks')),
+						'cancelLabel' => 'Abbrechen'
+					]) ?>
+
 				</form>
 			</div>
 		</div>
@@ -364,6 +163,7 @@
 
 	<!-- FOOTER -->
 	<?= $this->include("templates/footer.php"); ?>
+	<script src="<?= base_url('js/task_form.js') ?>"></script>
 </body>
 
 </html>
