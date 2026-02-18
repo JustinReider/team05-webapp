@@ -309,6 +309,11 @@
 												</div>
 											</div>
 										<?php endforeach; ?>
+										<a href="tasks/new?spalte=<?= esc($spaltenId) ?>"
+											class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center mb-2 shadow-sm"
+											style="font-size: 1.25rem;">
+											<i class="bi bi-plus-square-fill me-2"></i>
+										</a>
 									</div>
 								</div>
 							<?php endforeach; ?>

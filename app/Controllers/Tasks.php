@@ -8,6 +8,8 @@ use App\Models\SpaltenModel;
 use App\Models\TaskartenModel;
 use App\Models\PersonenModel;
 
+use function PHPUnit\Framework\isEmpty;
+
 class Tasks extends BaseController
 {
 	private const VIEW_TASK_FORM = 'tasks/task_form';
@@ -118,8 +120,7 @@ class Tasks extends BaseController
 	private function renderForm($id, $validation = null): string
 	{
 		$model = new \App\Models\TasksModel();
-		$postData = $this->request->getPost();
-		$task = !empty($postData) ? $postData : $model->getTask($id);
+		$task = $this->getTaskData($id, $model);
 		$task['id'] = !empty($id) ? $id : null;
 		$board = !empty($id) ? $model->getBoardByTask($id) : null;
 
@@ -139,6 +140,22 @@ class Tasks extends BaseController
 		];
 
 		return view(self::VIEW_TASK_FORM, $data);
+	}
+
+	private function getTaskData($id, TasksModel $model = new TasksModel())
+	{
+		$postData = $this->request->getPost();
+		if (!empty($postData)) return $postData; // task was posted
+
+		if (!empty($id)) {
+			$task = $model->getTask($id);
+			if (!empty($task)) return $task; // user tries to edit a task
+		}
+
+		$spalte = $this->request->getGet("spalte");
+		if (!empty($spalte)) return ['spaltenid' => $spalte]; // user wants to create a new task within a specific column
+
+		return null; // user wants to create a new task
 	}
 
 	/**
