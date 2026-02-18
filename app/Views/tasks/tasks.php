@@ -282,14 +282,28 @@
 
 												<div class="task-meta-item small mt-2 d-flex flex-wrap gap-3 justify-content-between">
 													<span>
-														<i class="bi bi-person me-1 text-secondary"></i>
-														<?php if (!empty($task['personen'])): ?>
-															<?= esc(implode(', ', array_map(
-																fn($p) => trim(($p['vorname'] ?? '') . ' ' . ($p['nachname'] ?? '')),
+														<?php if (!empty($task['personen']) && !empty($task['personen'][0])): ?>
+															<i class="bi bi-person me-1 text-secondary"></i>
+															<?php
+															$personenPopover = implode('<br>', array_map(
+																fn($p) => trim(($p['vorname'] ?? '') . ' ' . ($p['name'] ?? '')),
 																$task['personen']
-															))) ?>
-														<?php else: ?>
-															Keine Person zugeordnet
+															));
+															$personenKurz = implode(', ', array_map(
+																fn($p) => trim(($p['vorname'] ?? '')),
+																$task['personen']
+															));
+															?>
+															<span
+																tabindex="0"
+																data-bs-toggle="popover"
+																data-bs-trigger="hover"
+																data-bs-html="true"
+																data-bs-content="<?= esc($personenPopover) ?>"
+																class="fw-semibold"
+																style="cursor:pointer;text-decoration:underline dotted;text-underline-offset:2px;">
+																<?= esc($personenKurz) ?>
+															</span>
 														<?php endif; ?>
 													</span>
 												</div>
@@ -414,6 +428,14 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js"></script>
 	<script src="<?= base_url('js/drag-and-drop.js') ?>"></script>
 
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+			popoverTriggerList.forEach(function(popoverTriggerEl) {
+				new bootstrap.Popover(popoverTriggerEl);
+			});
+		});
+	</script>
 </body>
 
 </html>
