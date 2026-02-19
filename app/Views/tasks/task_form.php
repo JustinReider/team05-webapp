@@ -110,7 +110,7 @@
 									<span>Person auswählen...</span>
 								</button>
 
-								<div class="dropdown-menu w-100 p-0" style="max-height: 400px;">
+								<div class="dropdown-menu w-100" style="max-height: 400px;">
 									<!-- Suchfeld im Dropdown -->
 									<div class="p-2 border-bottom sticky-top bg-body">
 										<input type="text"

@@ -126,23 +126,35 @@ document.addEventListener('DOMContentLoaded', function() {
 		renderDropdown(e.target.value);
 	});
 
-dropdownBtn.addEventListener('shown.bs.dropdown', function() {
-	searchInput.value = '';
-	renderDropdown();
-	setTimeout(() => searchInput.focus(), 100);
-	const btnWidth = dropdownBtn.offsetWidth;
-	dropdownMenu.style.width = btnWidth + 'px';
-});
+	dropdownBtn.addEventListener('shown.bs.dropdown', function() {
+		searchInput.value = '';
 
-searchInput.addEventListener('click', (e) => {
-	e.stopPropagation();
-});
+		// Wegen der Button animation das Dropdown zunächst verstecken
+		dropdownMenu.style.display = 'none';
 
-dropdownMenu.addEventListener('click', (e) => {
-	if (!e.target.closest('.person-item')) {
+		setTimeout(() => {
+			searchInput.focus();
+		}, 100);
+
+		setTimeout(() => {
+			dropdownMenu.style.display = '';
+			const dropdownInstance = bootstrap.Dropdown.getInstance(dropdownBtn);
+			if (dropdownInstance && dropdownInstance._popper) {
+				dropdownInstance._popper.update();
+			}
+			renderDropdown();
+		}, 100);
+	});
+
+	searchInput.addEventListener('click', (e) => {
 		e.stopPropagation();
-	}
-});
+	});
+
+	dropdownMenu.addEventListener('click', (e) => {
+		if (!e.target.closest('.person-item')) {
+			e.stopPropagation();
+		}
+	});
 
 	loadPersons();
 	renderSelectedChips();

@@ -77,7 +77,7 @@ class TasksModel extends Model
 	public function getTask($id): array
 	{
 		if(empty($id)) return [];
-		return $this->find($id);
+		return $this->find($id) ?? [];
 	}
 
 	public function getBoardByTask($id)
